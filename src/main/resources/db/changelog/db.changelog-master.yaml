@@ -1,0 +1,1360 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1701657626015-1
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+            tableName: bank
+  - changeSet:
+      id: 1701657626015-2
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: amount
+                  type: FLOAT(12)
+              - column:
+                  name: bank_id
+                  type: BIGINT
+              - column:
+                  name: deposit_id
+                  type: BIGINT
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: transaction_date
+                  type: datetime
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: vendor_id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: payee
+                  type: VARCHAR(255)
+              - column:
+                  name: transaction_type
+                  type: VARCHAR(255)
+            tableName: bank_transaction
+  - changeSet:
+      id: 1701657626015-3
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: fixed_payment_amount
+                  type: FLOAT(12)
+              - column:
+                  name: expense_id
+                  type: BIGINT
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: fixed_payments
+                  type: VARCHAR(255)
+              - column:
+                  name: payment_schedule
+                  type: VARCHAR(255)
+            tableName: bill
+  - changeSet:
+      id: 1701657626015-4
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: scheduled_amount
+                  type: FLOAT(12)
+              - column:
+                  name: bill_id
+                  type: BIGINT
+              - column:
+                  name: deposit_id
+                  type: BIGINT
+              - column:
+                  name: end_date
+                  type: datetime
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: start_date
+                  type: datetime
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: frequency
+                  type: VARCHAR(255)
+              - column:
+                  name: note
+                  type: VARCHAR(255)
+              - column:
+                  name: scheduled_type
+                  type: VARCHAR(255)
+            tableName: budget_entry
+  - changeSet:
+      id: 1701657626015-5
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: paid
+                  type: BIT(1)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: transaction_amount
+                  type: FLOAT(12)
+              - column:
+                  name: budget_entry_id
+                  type: BIGINT
+              - column:
+                  name: due_date
+                  type: datetime
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+            tableName: budgeted_transaction
+  - changeSet:
+      id: 1701657626015-6
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: deposit_category_id
+                  type: BIGINT
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+            tableName: deposit
+  - changeSet:
+      id: 1701657626015-7
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+            tableName: deposit_category
+  - changeSet:
+      id: 1701657626015-8
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: execution_order
+                  type: INT
+              - column:
+                  name: deposit_id
+                  type: BIGINT
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: deposit_like_criteria
+                  type: VARCHAR(255)
+              - column:
+                  name: deposit_regex_criteria
+                  type: VARCHAR(255)
+            tableName: deposit_matching_rule
+  - changeSet:
+      id: 1701657626015-9
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: expense_category_id
+                  type: BIGINT
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+            tableName: expense
+  - changeSet:
+      id: 1701657626015-10
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+            tableName: expense_category
+  - changeSet:
+      id: 1701657626015-11
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: login_date
+                  type: datetime
+              - column:
+                  name: user_account_id
+                  type: BIGINT
+              - column:
+                  name: ip_address
+                  type: VARCHAR(255)
+            tableName: login_event
+  - changeSet:
+      id: 1701657626015-12
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: shopping_item_category_id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+            tableName: shopping_item
+  - changeSet:
+      id: 1701657626015-13
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+            tableName: shopping_item_category
+  - changeSet:
+      id: 1701657626015-14
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: amount
+                  type: FLOAT(12)
+              - column:
+                  name: quantity
+                  type: INT
+              - column:
+                  name: total_amount
+                  type: FLOAT(12)
+              - column:
+                  name: bank_transaction_id
+                  type: BIGINT
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: shopping_item_id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+            tableName: shopping_item_purchase
+  - changeSet:
+      id: 1701657626015-15
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: admin_flag
+                  type: BIT(1)
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: last_login_date
+                  type: datetime
+              - column:
+                  name: email_address
+                  type: VARCHAR(255)
+              - column:
+                  name: encrypted_password
+                  type: VARCHAR(255)
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+              - column:
+                  name: last_login_ip_address
+                  type: VARCHAR(255)
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+              - column:
+                  name: user_name
+                  type: VARCHAR(255)
+              - column:
+                  name: user_password
+                  type: VARCHAR(255)
+            tableName: user_account
+  - changeSet:
+      id: 1701657626015-16
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: expense_id
+                  type: BIGINT
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: desription
+                  type: VARCHAR(255)
+            tableName: vendor
+  - changeSet:
+      id: 1701657626015-17
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: vendor_id
+                  type: BIGINT
+              - column:
+                  name: user_name
+                  type: VARCHAR(255)
+              - column:
+                  name: user_password
+                  type: VARCHAR(255)
+              - column:
+                  name: vendor_website
+                  type: VARCHAR(255)
+            tableName: vendor_account
+  - changeSet:
+      id: 1701657626015-18
+      author: scott (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: execution_order
+                  type: INT
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: vendor_id
+                  type: BIGINT
+              - column:
+                  name: vendor_like_criteria
+                  type: VARCHAR(255)
+              - column:
+                  name: vendor_regex_criteria
+                  type: VARCHAR(255)
+            tableName: vendor_matching_rule
+  - changeSet:
+      id: 1701657626015-19
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: shopping_item_category_id
+            indexName: FK10akpu162pkovc0d8pyg56842
+            tableName: shopping_item
+  - changeSet:
+      id: 1701657626015-20
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FK1pneh41x6updi26pc2mn1gutw
+            tableName: bill
+  - changeSet:
+      id: 1701657626015-21
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FK3srsl5kxlcpsp26baer8ljt43
+            tableName: expense_category
+  - changeSet:
+      id: 1701657626015-22
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_account_id
+            indexName: FK4futx8tgf58e10280a4b5xjqc
+            tableName: login_event
+  - changeSet:
+      id: 1701657626015-23
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FK4g9lxc9craedtw1guu90jvy9q
+            tableName: vendor_account
+  - changeSet:
+      id: 1701657626015-24
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FK5ablf6e7o7ip5jggdhmkbyq8e
+            tableName: shopping_item_category
+  - changeSet:
+      id: 1701657626015-25
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: deposit_category_id
+            indexName: FK5ww2ssmqalcmov4p184oxgo8s
+            tableName: deposit
+  - changeSet:
+      id: 1701657626015-26
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: vendor_id
+            indexName: FK6r7vl1hn144ikrlsx7mnvh2f8
+            tableName: bank_transaction
+  - changeSet:
+      id: 1701657626015-27
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: budget_entry_id
+            indexName: FK7depx381s00we6kqf3uj03xd3
+            tableName: budgeted_transaction
+  - changeSet:
+      id: 1701657626015-28
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FK9f8o09c45pnmpjavji04tf16t
+            tableName: expense
+  - changeSet:
+      id: 1701657626015-29
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FKbl7fp16sc21ds62vpcac8v6rs
+            tableName: vendor_matching_rule
+  - changeSet:
+      id: 1701657626015-30
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FKckregby72r2c6lsqbc4ye52hq
+            tableName: shopping_item_purchase
+  - changeSet:
+      id: 1701657626015-31
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: deposit_id
+            indexName: FKdg8wts9rpw56heo6tllvq1me5
+            tableName: bank_transaction
+  - changeSet:
+      id: 1701657626015-32
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: vendor_id
+            indexName: FKdjbbf2x95i8emaru1o8egfjw5
+            tableName: vendor_account
+  - changeSet:
+      id: 1701657626015-33
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FKen1pw9kxo5lmtio7dspfdfr8w
+            tableName: bank
+  - changeSet:
+      id: 1701657626015-34
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: shopping_item_id
+            indexName: FKffhmabmctisvmldp1h2awg0d2
+            tableName: shopping_item_purchase
+  - changeSet:
+      id: 1701657626015-35
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FKfqcktthsiirnur1o3w759sg9m
+            tableName: budgeted_transaction
+  - changeSet:
+      id: 1701657626015-36
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FKhllkk5b9i12x37h0dv9j01hmj
+            tableName: budget_entry
+  - changeSet:
+      id: 1701657626015-37
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: expense_category_id
+            indexName: FKhuho44ssbmqywb3nfmm4ljfmk
+            tableName: expense
+  - changeSet:
+      id: 1701657626015-38
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FKiqmbhrcmqd22c3m9rh3x0a8ej
+            tableName: deposit
+  - changeSet:
+      id: 1701657626015-39
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: vendor_id
+            indexName: FKjc6c9w1db49i7rta2ho83grq2
+            tableName: vendor_matching_rule
+  - changeSet:
+      id: 1701657626015-40
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FKlo3oggailiwqymxaxy2jgmlww
+            tableName: bank_transaction
+  - changeSet:
+      id: 1701657626015-41
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: bank_id
+            indexName: FKmxomsvva422ml4eyehbkru5hb
+            tableName: bank_transaction
+  - changeSet:
+      id: 1701657626015-42
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: deposit_id
+            indexName: FKn51e6tbp2sos7f8jp6thsd805
+            tableName: budget_entry
+  - changeSet:
+      id: 1701657626015-43
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FKnvwulyrydt3o00ete0ta61r4q
+            tableName: deposit_matching_rule
+  - changeSet:
+      id: 1701657626015-44
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: bill_id
+            indexName: FKnxc10ou0682nv4tuje0w2n2r8
+            tableName: budget_entry
+  - changeSet:
+      id: 1701657626015-45
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: bank_transaction_id
+            indexName: FKofp5u2hcvuftkw9ju4iq0vlak
+            tableName: shopping_item_purchase
+  - changeSet:
+      id: 1701657626015-46
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FKojy4m8vaj6mu4xx0lvku6etso
+            tableName: vendor
+  - changeSet:
+      id: 1701657626015-47
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: expense_id
+            indexName: FKoxdd62gjaa69f8p83m7lktjti
+            tableName: bill
+  - changeSet:
+      id: 1701657626015-48
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FKp67lls4c14lu5puu2nv6n66bu
+            tableName: shopping_item
+  - changeSet:
+      id: 1701657626015-49
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: deposit_id
+            indexName: FKp8lplw6y9y5a3c1vr16xjdjeg
+            tableName: deposit_matching_rule
+  - changeSet:
+      id: 1701657626015-50
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: expense_id
+            indexName: FKr40m4wadqi8gub9xg0a2g8qbh
+            tableName: vendor
+  - changeSet:
+      id: 1701657626015-51
+      author: scott (generated)
+      changes:
+        - createIndex:
+            associatedWith: ""
+            columns:
+              - column:
+                  name: user_id
+            indexName: FKtfi85lidskp1m2r6bdrg2ja10
+            tableName: deposit_category
+  - changeSet:
+      id: 1701657626015-52
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: shopping_item_category_id
+            baseTableName: shopping_item
+            constraintName: FK10akpu162pkovc0d8pyg56842
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: shopping_item_category
+            validate: true
+  - changeSet:
+      id: 1701657626015-53
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: bill
+            constraintName: FK1pneh41x6updi26pc2mn1gutw
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-54
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: expense_category
+            constraintName: FK3srsl5kxlcpsp26baer8ljt43
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-55
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_account_id
+            baseTableName: login_event
+            constraintName: FK4futx8tgf58e10280a4b5xjqc
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-56
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: vendor_account
+            constraintName: FK4g9lxc9craedtw1guu90jvy9q
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-57
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: shopping_item_category
+            constraintName: FK5ablf6e7o7ip5jggdhmkbyq8e
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-58
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: deposit_category_id
+            baseTableName: deposit
+            constraintName: FK5ww2ssmqalcmov4p184oxgo8s
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: deposit_category
+            validate: true
+  - changeSet:
+      id: 1701657626015-59
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: vendor_id
+            baseTableName: bank_transaction
+            constraintName: FK6r7vl1hn144ikrlsx7mnvh2f8
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: vendor
+            validate: true
+  - changeSet:
+      id: 1701657626015-60
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: budget_entry_id
+            baseTableName: budgeted_transaction
+            constraintName: FK7depx381s00we6kqf3uj03xd3
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: budget_entry
+            validate: true
+  - changeSet:
+      id: 1701657626015-61
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: expense
+            constraintName: FK9f8o09c45pnmpjavji04tf16t
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-62
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: vendor_matching_rule
+            constraintName: FKbl7fp16sc21ds62vpcac8v6rs
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-63
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: shopping_item_purchase
+            constraintName: FKckregby72r2c6lsqbc4ye52hq
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-64
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: deposit_id
+            baseTableName: bank_transaction
+            constraintName: FKdg8wts9rpw56heo6tllvq1me5
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: deposit
+            validate: true
+  - changeSet:
+      id: 1701657626015-65
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: vendor_id
+            baseTableName: vendor_account
+            constraintName: FKdjbbf2x95i8emaru1o8egfjw5
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: vendor
+            validate: true
+  - changeSet:
+      id: 1701657626015-66
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: bank
+            constraintName: FKen1pw9kxo5lmtio7dspfdfr8w
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-67
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: shopping_item_id
+            baseTableName: shopping_item_purchase
+            constraintName: FKffhmabmctisvmldp1h2awg0d2
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: shopping_item
+            validate: true
+  - changeSet:
+      id: 1701657626015-68
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: budgeted_transaction
+            constraintName: FKfqcktthsiirnur1o3w759sg9m
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-69
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: budget_entry
+            constraintName: FKhllkk5b9i12x37h0dv9j01hmj
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-70
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: expense_category_id
+            baseTableName: expense
+            constraintName: FKhuho44ssbmqywb3nfmm4ljfmk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: expense_category
+            validate: true
+  - changeSet:
+      id: 1701657626015-71
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: deposit
+            constraintName: FKiqmbhrcmqd22c3m9rh3x0a8ej
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-72
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: vendor_id
+            baseTableName: vendor_matching_rule
+            constraintName: FKjc6c9w1db49i7rta2ho83grq2
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: vendor
+            validate: true
+  - changeSet:
+      id: 1701657626015-73
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: bank_transaction
+            constraintName: FKlo3oggailiwqymxaxy2jgmlww
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-74
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: bank_id
+            baseTableName: bank_transaction
+            constraintName: FKmxomsvva422ml4eyehbkru5hb
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: bank
+            validate: true
+  - changeSet:
+      id: 1701657626015-75
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: deposit_id
+            baseTableName: budget_entry
+            constraintName: FKn51e6tbp2sos7f8jp6thsd805
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: deposit
+            validate: true
+  - changeSet:
+      id: 1701657626015-76
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: deposit_matching_rule
+            constraintName: FKnvwulyrydt3o00ete0ta61r4q
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-77
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: bill_id
+            baseTableName: budget_entry
+            constraintName: FKnxc10ou0682nv4tuje0w2n2r8
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: bill
+            validate: true
+  - changeSet:
+      id: 1701657626015-78
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: bank_transaction_id
+            baseTableName: shopping_item_purchase
+            constraintName: FKofp5u2hcvuftkw9ju4iq0vlak
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: bank_transaction
+            validate: true
+  - changeSet:
+      id: 1701657626015-79
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: vendor
+            constraintName: FKojy4m8vaj6mu4xx0lvku6etso
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-80
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: expense_id
+            baseTableName: bill
+            constraintName: FKoxdd62gjaa69f8p83m7lktjti
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: expense
+            validate: true
+  - changeSet:
+      id: 1701657626015-81
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: shopping_item
+            constraintName: FKp67lls4c14lu5puu2nv6n66bu
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
+  - changeSet:
+      id: 1701657626015-82
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: deposit_id
+            baseTableName: deposit_matching_rule
+            constraintName: FKp8lplw6y9y5a3c1vr16xjdjeg
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: deposit
+            validate: true
+  - changeSet:
+      id: 1701657626015-83
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: expense_id
+            baseTableName: vendor
+            constraintName: FKr40m4wadqi8gub9xg0a2g8qbh
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: expense
+            validate: true
+  - changeSet:
+      id: 1701657626015-84
+      author: scott (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: deposit_category
+            constraintName: FKtfi85lidskp1m2r6bdrg2ja10
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user_account
+            validate: true
