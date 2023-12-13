@@ -11,10 +11,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Data
+@Builder
+@RequiredArgsConstructor
 public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +40,13 @@ public class Expense {
     @JoinColumn(name = "user_id")
     private UserAccount userAccount;
 
+    public Expense(Long id, String description, List<Bill> bills, ExpenseCategory expenseCategory, List<Vendor> vendors, UserAccount userAccount) {
+        this.id = id;
+        this.description = description;
+        this.bills = bills;
+        this.expenseCategory = expenseCategory;
+        this.vendors = vendors;
+        this.userAccount = userAccount;
+    }
 }
+
