@@ -2,29 +2,31 @@ package com.longware.financetracker.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.longware.financetracker.entities.Bank;
 import com.longware.financetracker.entities.BankTransaction;
 import com.longware.financetracker.entities.Deposit;
+import com.longware.financetracker.entities.DepositCategory;
 import com.longware.financetracker.entities.Expense;
+import com.longware.financetracker.entities.ExpenseCategory;
 import com.longware.financetracker.entities.Vendor;
-import com.longware.financetracker.entities.Bank.BankBuilder;
 
 import lombok.extern.java.Log;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 /**
- * Utility class to convert uploaded documents of types XLSX, CSV, and JSON to Java objects which can be serialized to the database 
+ * Utility class to convert uploaded documents of types XLSX, CSV, and JSON to
+ * Java objects which can be serialized to the database
  */
 @Log
 public class DocumentConversionUtil {
@@ -36,20 +38,21 @@ public class DocumentConversionUtil {
      */
     public static Workbook convertDocumentToWorkBook(File file) {
         Workbook workbook = null;
-        
+
         try {
             workbook = WorkbookFactory.create(file);
         } catch (IOException ex) {
             log.log(Level.SEVERE, "IOException while converting document to workbook", ex);
         }
-        
+
         return workbook;
     }
 
     /**
-     * Convert a Workbook object into a List of BankTransaction objects based on the specified column names
+     * Convert a Workbook object into a List of BankTransaction objects based on the
+     * specified column names
      *
-     * @param workbook   the Workbook object to convert
+     * @param workbook    the Workbook object to convert
      * @param columnNames the column names to extract from the sheet
      * @return a List of BankTransaction objects
      */
@@ -65,7 +68,8 @@ public class DocumentConversionUtil {
             String columnName = columnNames[i];
             for (int j = 0; j < headerRow.getLastCellNum(); j++) {
                 Cell cell = headerRow.getCell(j);
-                if (cell != null && cell.getCellType() == CellType.STRING && columnName.equals(cell.getStringCellValue())) {
+                if (cell != null && cell.getCellType() == CellType.STRING
+                        && columnName.equals(cell.getStringCellValue())) {
                     columnIndexes[i] = j;
                     break;
                 }
@@ -106,31 +110,32 @@ public class DocumentConversionUtil {
                             bankTransaction.setAmount((float) cell.getNumericCellValue());
                             break;
                         case "EXPENSE":
-                            expense = Expense.builder().description(cell.getStringCellValue()).build();
+                            expense.setDescription(cell.getStringCellValue());
+                            vendor.setExpense(expense);
                             break;
                         case "DEPOSIT":
-                            deposit = Deposit.builder().description(cell.getStringCellValue()).build();
+                            deposit.setDescription(cell.getStringCellValue());
+                            bankTransaction.setDeposit(deposit);
                             break;
-                            /** 
                         case "INCOME":
-                            bankTransaction.setIncome(cell.getNumericCellValue());
-                            break;
-                        case "MERCHANT":
-                            bankTransaction.setMerchant(cell.getStringCellValue());
+                            deposit.setDescription(cell.getStringCellValue());
+                            bankTransaction.setDeposit(deposit);
                             break;
                         case "VENDOR":
-                            bankTransaction.setVendor(cell.getStringCellValue());
-                            break;
-                        case "EXPENSE CATEGORY":
-                            bankTransaction.setExpenseCategory(cell.getStringCellValue());
+                            vendor.setDescription(cell.getStringCellValue());
+                            bankTransaction.setVendor(vendor);
                             break;
                         case "DEPOSIT CATEGORY":
-                            bankTransaction.setDepositCategory(cell.getStringCellValue());
+                            DepositCategory depositCategory = DepositCategory.builder()
+                                    .description(cell.getStringCellValue()).build();
+                            deposit.setDepositCategory(depositCategory);
                             break;
-                            */
-                        // Add more cases for other columns if needed
-                    
-                }
+                        case "EXPENSE_CATEGORY":
+                            expense.setExpenseCategory(ExpenseCategory.builder().description(cell.getStringCellValue())
+                                    .userAccount(bankTransaction.getUserAccount()).build());
+                            break;
+
+                    }
                 }
             }
 

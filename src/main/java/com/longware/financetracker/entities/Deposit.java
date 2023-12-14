@@ -2,7 +2,6 @@ package com.longware.financetracker.entities;
 
 import java.util.List;
 
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,13 +14,17 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @Entity
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class Deposit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -13,10 +13,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 
 @Entity
 @Data
 @Builder
+@Setter
 public class Bank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -439,7 +439,7 @@ databaseChangeLog:
                   name: user_id
                   type: BIGINT
               - column:
-                  name: desription
+                  name: description
                   type: VARCHAR(255)
             tableName: vendor
   - changeSet:
