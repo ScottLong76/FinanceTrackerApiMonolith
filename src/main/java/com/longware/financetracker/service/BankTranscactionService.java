@@ -50,4 +50,13 @@ public class BankTranscactionService {
         return bankTransactionRepository.findAllById(ids);
     }
 
+    public long count() {
+        return bankTransactionRepository.count();
+    }
+
+    public boolean exists(BankTransaction bankTransaction) {
+        return bankTransactionRepository.existsByDescriptionAndAmountAndTransactionDateAndUserAccount(
+                bankTransaction.getDescription(), bankTransaction.getAmount(), bankTransaction.getTransactionDate(),
+                bankTransaction.getUserAccount());
+    }
 }

@@ -3,6 +3,7 @@ package com.longware.financetracker.service;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.BudgetedTransaction;
+import com.longware.financetracker.repository.BudgetedTransactionRepository;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,33 +15,33 @@ import lombok.Setter;
 @Getter
 public class BudgetedTransactionService {
 
-    private final BudgetedTransactionService budgetedTransactionService;
+    private final BudgetedTransactionRepository budgetedTransactionRepository;
 
     // Write methods to interact with all methods currently defined in the
     // BudgetedTransactionRepository
 
     public void deleteAll() {
-        budgetedTransactionService.deleteAll();
+        budgetedTransactionRepository.deleteAll();
     }
 
     public void deleteById(Long id) {
-        budgetedTransactionService.deleteById(id);
+        budgetedTransactionRepository.deleteById(id);
     }
 
     public void saveAll(Iterable<BudgetedTransaction> budgetedTransactions) {
-        budgetedTransactionService.saveAll(budgetedTransactions);
+        budgetedTransactionRepository.saveAll(budgetedTransactions);
     }
 
     public void save(BudgetedTransaction budgetedTransaction) {
-        budgetedTransactionService.save(budgetedTransaction);
+        budgetedTransactionRepository.save(budgetedTransaction);
     }
 
     public Object findById(Long id) {
-        return budgetedTransactionService.findById(id);
+        return budgetedTransactionRepository.findById(id);
     }
 
     public Iterable<BudgetedTransaction> findAll() {
-        return budgetedTransactionService.findAll();
+        return budgetedTransactionRepository.findAll();
     }
 
 }
