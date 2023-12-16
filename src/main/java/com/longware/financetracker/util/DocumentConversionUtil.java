@@ -1,6 +1,7 @@
 package com.longware.financetracker.util;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.longware.financetracker.entities.Bank;
 import com.longware.financetracker.entities.BankTransaction;
@@ -30,6 +32,9 @@ import lombok.extern.java.Log;
  */
 @Log
 public class DocumentConversionUtil {
+
+    public static final String[] columnNames = { "DATE", "DESCRIPTION", "BANK", "AMOUNT", "DEPOSIT AMOUNT",
+            "WITHDRAWAL AMOUNT", "EXPENSE", "DEPOSIT", "INCOME", "VENDOR", "DEPOSIT CATEGORY", "EXPENSE_CATEGORY" };
 
     /**
      * Convert an uploaded XLSX, CSV, or JSON document into a WorkBook object
@@ -56,7 +61,7 @@ public class DocumentConversionUtil {
      * @param columnNames the column names to extract from the sheet
      * @return a List of BankTransaction objects
      */
-    public static List<BankTransaction> convertWorkbookToBankTransactions(Workbook workbook, String[] columnNames) {
+    public static List<BankTransaction> convertWorkbookToBankTransactions(Workbook workbook) {
         List<BankTransaction> bankTransactions = new ArrayList<>();
 
         Sheet sheet = workbook.getSheetAt(0); // Assuming sheet 0 contains the bank transactions
@@ -144,4 +149,21 @@ public class DocumentConversionUtil {
 
         return bankTransactions;
     }
+
+    public static List<BankTransaction> convertFileToBankTransactions(File file) {
+        Workbook workbook = convertDocumentToWorkBook(file);
+        return convertWorkbookToBankTransactions(workbook);
+    }
+
+    public static File convertMultipartFileToFile(MultipartFile multipartFile) {
+        File file = new File(multipartFile.getOriginalFilename());
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(multipartFile.getBytes());
+        } catch (IOException ex) {
+            log.log(Level.SEVERE, "IOException while converting multipart file to file", ex);
+        }
+
+        return file;
+    }
+
 }

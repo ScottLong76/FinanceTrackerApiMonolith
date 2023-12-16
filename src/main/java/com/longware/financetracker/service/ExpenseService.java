@@ -45,4 +45,8 @@ public class ExpenseService {
         return expenseRepository.findById(id);
     }
 
+    public Iterable<Expense> findAll() {
+        return expenseRepository.findAll();
+    }
+
 }

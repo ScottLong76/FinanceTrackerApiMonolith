@@ -49,4 +49,8 @@ public class ExpenseCategoryService {
         return expenseCategoryRepository.findAll();
     }
 
+    public boolean entityExists(ExpenseCategory expenseCategory) {
+        return expenseCategoryRepository.entityExists(expenseCategory);
+    }
+
 }

@@ -49,4 +49,8 @@ public class VendorService {
         return vendorRepository.findAll();
     }
 
+    public boolean entityExists(Vendor vendor) {
+        return vendorRepository.entityExists(vendor);
+    }
+
 }

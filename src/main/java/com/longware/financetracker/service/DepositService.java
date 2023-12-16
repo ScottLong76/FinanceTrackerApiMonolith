@@ -49,4 +49,8 @@ public class DepositService {
         return depositRepository.findAll();
     }
 
+    public boolean entityExists(Deposit deposit) {
+        return depositRepository.entityExists(deposit);
+    }
+
 }
