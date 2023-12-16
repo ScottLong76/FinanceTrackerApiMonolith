@@ -1,5 +1,7 @@
 package com.longware.financetracker.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -10,13 +12,14 @@ import com.longware.financetracker.repository.BankTransactionRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import com.longware.financetracker.service.interfaces.EntityInterface;
 
 // Service Layer for BankTransaction Entity
 @Service
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class BankTranscactionService {
+public class BankTranscactionService<T> implements EntityInterface<BankTransaction> {
 
     private final BankTransactionRepository bankTransactionRepository;
 
@@ -54,9 +57,11 @@ public class BankTranscactionService {
         return bankTransactionRepository.count();
     }
 
-    public boolean exists(BankTransaction bankTransaction) {
+    public boolean entityExists(BankTransaction bankTransaction) {
         return bankTransactionRepository.existsByDescriptionAndAmountAndTransactionDateAndUserAccount(
                 bankTransaction.getDescription(), bankTransaction.getAmount(), bankTransaction.getTransactionDate(),
                 bankTransaction.getUserAccount());
     }
+
 }
+
