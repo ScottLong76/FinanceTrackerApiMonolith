@@ -11,11 +11,11 @@ import com.longware.financetracker.repository.interfaces.EntityRepositoryInterfa
 @Repository
 public interface BudgetedTransactionRepository extends EntityRepositoryInterface<BudgetedTransaction, Long> {
 
-    public boolean existsByPaidAndTransactionAmountAndDueDaateAndUserAccount(boolean paid, Float transactionAmount,
+    public boolean existsByPaidAndTransactionAmountAndDueDateAndUserAccount(boolean paid, Float transactionAmount,
             Date dueDate, UserAccount userAccount);
 
     public default boolean entityExists(BudgetedTransaction budgetedTransaction) {
-        return existsByPaidAndTransactionAmountAndDueDaateAndUserAccount(budgetedTransaction.isPaid(),
+        return existsByPaidAndTransactionAmountAndDueDateAndUserAccount(budgetedTransaction.isPaid(),
                 budgetedTransaction.getTransactionAmount(), budgetedTransaction.getDueDate(),
                 budgetedTransaction.getUserAccount());
     }

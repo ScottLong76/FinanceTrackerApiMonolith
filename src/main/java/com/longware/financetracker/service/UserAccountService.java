@@ -49,4 +49,12 @@ public class UserAccountService {
         return userAccountRepository.findById(id);
     }
 
+    public boolean entityExists(UserAccount userAccount) {
+        return userAccountRepository.entityExists(userAccount);
+    }
+
+    public UserAccount findByUserName(String username) {
+        return userAccountRepository.findByUserName(username);
+    }
+
 }
