@@ -38,8 +38,8 @@ public class VendorMatchingRuleService {
         vendorMatchingRuleRepository.saveAll(vendorMatchingRules);
     }
 
-    public void save(VendorMatchingRule vendorMatchingRule) {
-        vendorMatchingRuleRepository.save(vendorMatchingRule);
+    public VendorMatchingRule save(VendorMatchingRule vendorMatchingRule) {
+        return vendorMatchingRuleRepository.save(vendorMatchingRule);
     }
 
     public Iterable<VendorMatchingRule> findAll() {

@@ -34,8 +34,8 @@ public class DepositCategoryService {
         depositCategoryRepository.saveAll(depositCategories);
     }
 
-    public void save(DepositCategory depositCategory) {
-        depositCategoryRepository.save(depositCategory);
+    public DepositCategory save(DepositCategory depositCategory) {
+        return depositCategoryRepository.save(depositCategory);
     }
 
     public Optional<DepositCategory> findById(Long id) {
@@ -48,6 +48,10 @@ public class DepositCategoryService {
 
     public boolean entityExists(DepositCategory depositCategory) {
         return depositCategoryRepository.entityExists(depositCategory);
+    }
+
+    public Optional<DepositCategory> getEntity(DepositCategory depositCategory) {
+        return depositCategoryRepository.getEntity(depositCategory);
     }
 
 }

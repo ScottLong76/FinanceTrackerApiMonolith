@@ -32,8 +32,8 @@ public class BudgetedTransactionService {
         budgetedTransactionRepository.saveAll(budgetedTransactions);
     }
 
-    public void save(BudgetedTransaction budgetedTransaction) {
-        budgetedTransactionRepository.save(budgetedTransaction);
+    public BudgetedTransaction save(BudgetedTransaction budgetedTransaction) {
+        return budgetedTransactionRepository.save(budgetedTransaction);
     }
 
     public Object findById(Long id) {

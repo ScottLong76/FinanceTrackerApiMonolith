@@ -37,8 +37,8 @@ public class UserAccountService {
         userAccountRepository.saveAll(userAccounts);
     }
 
-    public void save(UserAccount userAccount) {
-        userAccountRepository.save(userAccount);
+    public UserAccount save(UserAccount userAccount) {
+        return userAccountRepository.save(userAccount);
     }
 
     public Iterable<UserAccount> findAll() {
@@ -53,8 +53,12 @@ public class UserAccountService {
         return userAccountRepository.entityExists(userAccount);
     }
 
-    public UserAccount findByUserName(String username) {
+    public Optional<UserAccount> findByUserName(String username) {
         return userAccountRepository.findByUserName(username);
+    }
+
+    public Optional<UserAccount> getEntity(UserAccount userAccount) {
+        return userAccountRepository.getEntity(userAccount);
     }
 
 }

@@ -37,8 +37,8 @@ public class VendorService {
         vendorRepository.saveAll(vendors);
     }
 
-    public void save(Vendor vendor) {
-        vendorRepository.save(vendor);
+    public Vendor save(Vendor vendor) {
+        return vendorRepository.save(vendor);
     }
 
     public Optional<Vendor> findById(Long id) {
@@ -51,6 +51,10 @@ public class VendorService {
 
     public boolean entityExists(Vendor vendor) {
         return vendorRepository.entityExists(vendor);
+    }
+
+    public Optional<Vendor> getEntity(Vendor vendor) {
+        return vendorRepository.getEntity(vendor);
     }
 
 }

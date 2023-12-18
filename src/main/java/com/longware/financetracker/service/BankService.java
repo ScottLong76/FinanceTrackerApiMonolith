@@ -7,20 +7,18 @@ import org.springframework.stereotype.Service;
 import com.longware.financetracker.entities.Bank;
 import com.longware.financetracker.repository.BankRepository;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 // Service Layer for Bank Entity
 @Service
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 public class BankService {
 
-    private BankRepository bankRepository;
+    private final BankRepository bankRepository;
 
     // Write methods to interact with all methods currently defined in the
     // BankRepository
@@ -37,8 +35,8 @@ public class BankService {
         bankRepository.saveAll(banks);
     }
 
-    public void save(Bank bank) {
-        bankRepository.save(bank);
+    public Bank save(Bank bank) {
+        return bankRepository.save(bank);
     }
 
     public Optional<Bank> findById(Long id) {
@@ -61,4 +59,11 @@ public class BankService {
         return bankRepository.existsById(id);
     }
 
+    public boolean entityExists(Bank bank) {
+        return bankRepository.entityExists(bank);
+    }
+
+    public Optional<Bank> getEntity(Bank bank) {
+        return bankRepository.getEntity(bank);
+    }
 }

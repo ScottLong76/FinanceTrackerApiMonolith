@@ -38,8 +38,8 @@ public class ShoppingItemCategoryService {
         shoppingItemCategoryRepository.saveAll(shoppingItemCategories);
     }
 
-    public void save(ShoppingItemCategory shoppingItemCategory) {
-        shoppingItemCategoryRepository.save(shoppingItemCategory);
+    public ShoppingItemCategory save(ShoppingItemCategory shoppingItemCategory) {
+        return shoppingItemCategoryRepository.save(shoppingItemCategory);
     }
 
     public Optional<ShoppingItemCategory> findById(Long id) {

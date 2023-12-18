@@ -1,5 +1,7 @@
 package com.longware.financetracker.repository;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.longware.financetracker.entities.ShoppingItem;
@@ -11,8 +13,14 @@ public interface ShoppingItemRepository extends EntityRepositoryInterface<Shoppi
 
     public boolean existsByDescriptionAndUserAccount(String description, UserAccount userAccount);
 
+    public Optional<ShoppingItem> findByDescriptionAndUserAccount(String description, UserAccount userAccount);
+
     public default boolean entityExists(ShoppingItem shoppingItem) {
         return existsByDescriptionAndUserAccount(shoppingItem.getDescription(), shoppingItem.getUserAccount());
+    }
+
+    public default Optional<ShoppingItem> getEntity(ShoppingItem shoppingItem) {
+        return findByDescriptionAndUserAccount(shoppingItem.getDescription(), shoppingItem.getUserAccount());
     }
 
 }

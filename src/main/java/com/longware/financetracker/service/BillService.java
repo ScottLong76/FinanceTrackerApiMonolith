@@ -1,11 +1,11 @@
 package com.longware.financetracker.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.Bill;
 import com.longware.financetracker.repository.BillRepository;
-
-import java.util.Optional;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +34,8 @@ public class BillService {
         billRepository.saveAll(bills);
     }
 
-    public void save(Bill bill) {
-        billRepository.save(bill);
+    public Bill save(Bill bill) {
+        return billRepository.save(bill);
     }
 
     public Optional<Bill> findById(Long id) {
@@ -56,6 +56,10 @@ public class BillService {
 
     public boolean existsById(Long id) {
         return billRepository.existsById(id);
+    }
+
+    public Optional<Bill> getEntity(Bill bill) {
+        return billRepository.getEntity(bill);
     }
 
 }

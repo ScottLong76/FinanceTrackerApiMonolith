@@ -37,8 +37,8 @@ public class DepositService {
         depositRepository.saveAll(deposits);
     }
 
-    public void save(Deposit deposit) {
-        depositRepository.save(deposit);
+    public Deposit save(Deposit deposit) {
+        return depositRepository.save(deposit);
     }
 
     public Optional<Deposit> findById(Long id) {
@@ -51,6 +51,10 @@ public class DepositService {
 
     public boolean entityExists(Deposit deposit) {
         return depositRepository.entityExists(deposit);
+    }
+
+    public Optional<Deposit> getEntity(Deposit deposit) {
+        return depositRepository.getEntity(deposit);
     }
 
 }

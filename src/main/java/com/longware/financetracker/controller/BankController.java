@@ -24,9 +24,6 @@ public class BankController {
 
     private final BankRepository bankRepository;
 
-    // TODO: Add methods to create, update, and delete Bank objects using available
-    // methods in the BankRepository interface.
-
     /**
      * This method returns a Bank object by its id.
      * 

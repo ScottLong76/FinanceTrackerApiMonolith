@@ -37,8 +37,8 @@ public class ShoppingItemService {
         shoppingItemRepository.saveAll(shoppingItems);
     }
 
-    public void save(ShoppingItem shoppingItem) {
-        shoppingItemRepository.save(shoppingItem);
+    public ShoppingItem save(ShoppingItem shoppingItem) {
+        return shoppingItemRepository.save(shoppingItem);
     }
 
     public Iterable<ShoppingItem> findAll() {

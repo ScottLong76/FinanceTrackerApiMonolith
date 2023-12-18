@@ -1,5 +1,7 @@
 package com.longware.financetracker.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.VendorAccount;
@@ -8,8 +10,6 @@ import com.longware.financetracker.repository.VendorAccountRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import java.util.Optional;
 
 /**
  * This class is used to handle the business logic for the VendorAccount entity.
@@ -37,8 +37,8 @@ public class VendorAccountService {
         vendorAccountRepository.saveAll(vendorAccounts);
     }
 
-    public void save(VendorAccount vendorAccount) {
-        vendorAccountRepository.save(vendorAccount);
+    public VendorAccount save(VendorAccount vendorAccount) {
+        return vendorAccountRepository.save(vendorAccount);
     }
 
     public Iterable<VendorAccount> findAll() {

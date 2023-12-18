@@ -10,12 +10,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Data
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
+@Getter
+@Setter
 public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -37,8 +37,8 @@ public class ExpenseService {
         expenseRepository.saveAll(expenses);
     }
 
-    public void save(Expense expense) {
-        expenseRepository.save(expense);
+    public Expense save(Expense expense) {
+        return expenseRepository.save(expense);
     }
 
     public Optional<Expense> findById(Long id) {
@@ -47,6 +47,14 @@ public class ExpenseService {
 
     public Iterable<Expense> findAll() {
         return expenseRepository.findAll();
+    }
+
+    public boolean entityExists(Expense expense) {
+        return expenseRepository.entityExists(expense);
+    }
+
+    public Optional<Expense> getEntity(Expense expense) {
+        return expenseRepository.getEntity(expense);
     }
 
 }

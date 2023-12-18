@@ -37,8 +37,8 @@ public class LoginEventService {
         loginEventRepository.saveAll(loginEvents);
     }
 
-    public void save(LoginEvent loginEvent) {
-        loginEventRepository.save(loginEvent);
+    public LoginEvent save(LoginEvent loginEvent) {
+        return loginEventRepository.save(loginEvent);
     }
 
     public Optional<LoginEvent> findById(Long id) {

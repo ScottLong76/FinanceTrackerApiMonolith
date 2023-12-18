@@ -15,9 +15,11 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Root;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class ShoppingItemPurchase {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)

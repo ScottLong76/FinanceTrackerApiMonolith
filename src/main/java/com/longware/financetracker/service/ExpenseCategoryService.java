@@ -37,8 +37,8 @@ public class ExpenseCategoryService {
         expenseCategoryRepository.saveAll(expenseCategories);
     }
 
-    public void save(ExpenseCategory expenseCategory) {
-        expenseCategoryRepository.save(expenseCategory);
+    public ExpenseCategory save(ExpenseCategory expenseCategory) {
+        return expenseCategoryRepository.save(expenseCategory);
     }
 
     public Optional<ExpenseCategory> findById(Long id) {
@@ -51,6 +51,10 @@ public class ExpenseCategoryService {
 
     public boolean entityExists(ExpenseCategory expenseCategory) {
         return expenseCategoryRepository.entityExists(expenseCategory);
+    }
+
+    public Optional<ExpenseCategory> getEntity(ExpenseCategory expenseCategory) {
+        return expenseCategoryRepository.getEntity(expenseCategory);
     }
 
 }

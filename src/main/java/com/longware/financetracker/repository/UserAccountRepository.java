@@ -1,5 +1,7 @@
 package com.longware.financetracker.repository;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.longware.financetracker.entities.UserAccount;
@@ -14,5 +16,10 @@ public interface UserAccountRepository extends EntityRepositoryInterface<UserAcc
         return existsByUserName(userAccount.getUserName());
     }
 
-    public UserAccount findByUserName(String username);
+    public Optional<UserAccount> findByUserName(String username);
+
+    public default Optional<UserAccount> getEntity(UserAccount userAccount) {
+        return findByUserName(userAccount.getUserName());
+    }
+
 }

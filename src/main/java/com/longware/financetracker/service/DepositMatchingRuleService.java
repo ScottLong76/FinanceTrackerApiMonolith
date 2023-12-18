@@ -37,8 +37,8 @@ public class DepositMatchingRuleService {
         depositMatchingRuleRepository.saveAll(depositMatchingRules);
     }
 
-    public void save(DepositMatchingRule depositMatchingRule) {
-        depositMatchingRuleRepository.save(depositMatchingRule);
+    public DepositMatchingRule save(DepositMatchingRule depositMatchingRule) {
+        return depositMatchingRuleRepository.save(depositMatchingRule);
     }
 
     public Optional<DepositMatchingRule> findById(Long id) {

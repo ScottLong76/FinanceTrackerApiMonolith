@@ -33,7 +33,7 @@ import lombok.extern.java.Log;
 @Log
 public class DocumentConversionUtil {
 
-    public static final String[] columnNames = { "DATE", "DESCRIPTION", "BANK", "AMOUNT", "DEPOSIT AMOUNT",
+    public static final String[] columnNames = { "DATE", "DESCRIPTION", "BANK", "AMOUNT", "DEPOSIT AMOUNT", "MERCHANT",
             "WITHDRAWAL AMOUNT", "EXPENSE", "DEPOSIT", "INCOME", "VENDOR", "DEPOSIT CATEGORY", "EXPENSE_CATEGORY" };
 
     /**
@@ -74,7 +74,7 @@ public class DocumentConversionUtil {
             for (int j = 0; j < headerRow.getLastCellNum(); j++) {
                 Cell cell = headerRow.getCell(j);
                 if (cell != null && cell.getCellType() == CellType.STRING
-                        && columnName.equals(cell.getStringCellValue())) {
+                        && columnName.equals(cell.getStringCellValue().toUpperCase())) {
                     columnIndexes[i] = j;
                     break;
                 }
@@ -95,7 +95,8 @@ public class DocumentConversionUtil {
                 int columnIndex = columnIndexes[i];
                 Cell cell = row.getCell(columnIndex);
                 if (cell != null) {
-                    switch (columnNames[i]) {
+                    String columnHeader = headerRow.getCell(columnIndex).getStringCellValue().toUpperCase();
+                    switch (columnHeader) {
                         case "DATE":
                             bankTransaction.setTransactionDate(cell.getDateCellValue());
                             break;
@@ -130,6 +131,10 @@ public class DocumentConversionUtil {
                             vendor.setDescription(cell.getStringCellValue());
                             bankTransaction.setVendor(vendor);
                             break;
+                        case "MERCHANT":
+                            vendor.setDescription(cell.getStringCellValue());
+                            bankTransaction.setVendor(vendor);
+                            break;
                         case "DEPOSIT CATEGORY":
                             DepositCategory depositCategory = DepositCategory.builder()
                                     .description(cell.getStringCellValue()).build();
@@ -143,6 +148,7 @@ public class DocumentConversionUtil {
                     }
                 }
             }
+            log.log(Level.INFO, "Bank transaction: {0}", bankTransaction);
 
             bankTransactions.add(bankTransaction);
         }

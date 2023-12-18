@@ -34,8 +34,8 @@ public class BankTransactionService {
         bankTransactionRepository.saveAll(bankTransactions);
     }
 
-    public void save(BankTransaction bankTransaction) {
-        bankTransactionRepository.save(bankTransaction);
+    public BankTransaction save(BankTransaction bankTransaction) {
+        return bankTransactionRepository.save(bankTransaction);
     }
 
     public Optional<BankTransaction> findById(Long id) {
@@ -56,6 +56,10 @@ public class BankTransactionService {
 
     public boolean entityExists(BankTransaction bankTransaction) {
         return bankTransactionRepository.entityExists(bankTransaction);
+    }
+
+    public Optional<BankTransaction> getEntity(BankTransaction bankTransaction) {
+        return bankTransactionRepository.getEntity(bankTransaction);
     }
 
 }

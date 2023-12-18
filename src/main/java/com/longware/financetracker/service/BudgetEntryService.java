@@ -34,8 +34,8 @@ public class BudgetEntryService {
         budgetEntryRepository.saveAll(budgetEntries);
     }
 
-    public void save(BudgetEntry budgetEntry) {
-        budgetEntryRepository.save(budgetEntry);
+    public BudgetEntry save(BudgetEntry budgetEntry) {
+        return budgetEntryRepository.save(budgetEntry);
     }
 
     public Optional<BudgetEntry> findById(Long id) {
