@@ -104,13 +104,16 @@ public class FileUploadController {
                             Optional.ofNullable(vendor.getExpense())
                                     .ifPresent(expense -> {
                                         expense.setUserAccount(userAccount);
-                                        Optional<ExpenseCategory> expenseCategoryOptional = expenseCategoryService
-                                                .getEntity(expense.getExpenseCategory());
-                                        expense.setExpenseCategory(expenseCategoryOptional.orElseGet(
-                                                () -> expenseCategoryService.save(expense.getExpenseCategory())));
-                                        Optional<Expense> expenseOptional = expenseService.getEntity(expense);
-                                        vendor.setExpense(
-                                                expenseOptional.orElseGet(() -> expenseService.save(expense)));
+                                        expenseCategoryService.getEntity(expense.getExpenseCategory())
+                                            .ifPresentOrElse(
+                                                expenseCategory -> expense.setExpenseCategory(expenseCategory),
+                                                () -> expense.setExpenseCategory(expenseCategoryService.save(expense.getExpenseCategory()))
+                                            );
+                                        expenseService.getEntity(expense)
+                                            .ifPresentOrElse(
+                                                existingExpense -> vendor.setExpense(existingExpense),
+                                                () -> vendor.setExpense(expenseService.save(expense))
+                                            );
                                     });
                             Optional<Vendor> vendorOptional = vendorService.getEntity(vendor);
                             bankTransaction.setVendor(vendorOptional.orElseGet(() -> vendorService.save(vendor)));
