@@ -38,7 +38,7 @@ public class ExpenseCategoryService {
     }
 
     public ExpenseCategory save(ExpenseCategory expenseCategory) {
-        return expenseCategoryRepository.save(expenseCategory);
+        return (expenseCategory != null ? expenseCategoryRepository.save(expenseCategory) : null);
     }
 
     public Optional<ExpenseCategory> findById(Long id) {

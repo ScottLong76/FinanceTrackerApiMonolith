@@ -38,7 +38,7 @@ public class ExpenseService {
     }
 
     public Expense save(Expense expense) {
-        return expenseRepository.save(expense);
+        return (expense != null ? expenseRepository.save(expense) : null);
     }
 
     public Optional<Expense> findById(Long id) {

@@ -38,7 +38,7 @@ public class DepositService {
     }
 
     public Deposit save(Deposit deposit) {
-        return depositRepository.save(deposit);
+        return (deposit != null ? depositRepository.save(deposit) : null);
     }
 
     public Optional<Deposit> findById(Long id) {

@@ -17,8 +17,6 @@ import com.longware.financetracker.entities.Bank;
 import com.longware.financetracker.entities.BankTransaction;
 import com.longware.financetracker.entities.Deposit;
 import com.longware.financetracker.entities.DepositCategory;
-import com.longware.financetracker.entities.Expense;
-import com.longware.financetracker.entities.ExpenseCategory;
 import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.entities.Vendor;
 import com.longware.financetracker.service.BankService;
@@ -104,16 +102,15 @@ public class FileUploadController {
                             Optional.ofNullable(vendor.getExpense())
                                     .ifPresent(expense -> {
                                         expense.setUserAccount(userAccount);
-                                        if (expense.getExpenseCategory() != null) {
-                                            expense.getExpenseCategory().setUserAccount(userAccount);
-                                        }
-                                        Optional<ExpenseCategory> expenseCategoryOptional = expenseCategoryService
-                                                .getEntity(expense.getExpenseCategory());
-                                        expense.setExpenseCategory(expenseCategoryOptional.orElseGet(
-                                                () -> expenseCategoryService.save(expense.getExpenseCategory())));
-                                        Optional<Expense> expenseOptional = expenseService.getEntity(expense);
-                                        vendor.setExpense(
-                                                expenseOptional.orElseGet(() -> expenseService.save(expense)));
+                                        expenseCategoryService.getEntity(expense.getExpenseCategory())
+                                                .ifPresentOrElse(
+                                                        expenseCategory -> expense.setExpenseCategory(expenseCategory),
+                                                        () -> expense.setExpenseCategory(expenseCategoryService
+                                                                .save(expense.getExpenseCategory())));
+                                        expenseService.getEntity(expense)
+                                                .ifPresentOrElse(
+                                                        existingExpense -> vendor.setExpense(existingExpense),
+                                                        () -> vendor.setExpense(expenseService.save(expense)));
                                     });
                             Optional<Vendor> vendorOptional = vendorService.getEntity(vendor);
                             bankTransaction.setVendor(vendorOptional.orElseGet(() -> vendorService.save(vendor)));
