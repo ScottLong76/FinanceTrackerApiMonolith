@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.BankTransaction;
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.repository.BankTransactionRepository;
 
 import lombok.Getter;
@@ -30,6 +31,10 @@ public class BankTransactionService {
         bankTransactionRepository.deleteById(id);
     }
 
+    public void delete(BankTransaction bankTransaction) {
+        bankTransactionRepository.delete(bankTransaction);
+    }
+
     public void saveAll(Iterable<BankTransaction> bankTransactions) {
         bankTransactionRepository.saveAll(bankTransactions);
     }
@@ -48,6 +53,10 @@ public class BankTransactionService {
 
     public Iterable<BankTransaction> findAllById(Iterable<Long> ids) {
         return bankTransactionRepository.findAllById(ids);
+    }
+
+    public Iterable<BankTransaction> findByUserAccount(UserAccount userAccount) {
+        return bankTransactionRepository.findByUserAccount(userAccount);
     }
 
     public long count() {

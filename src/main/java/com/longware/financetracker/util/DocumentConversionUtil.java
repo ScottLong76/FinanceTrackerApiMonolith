@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.longware.financetracker.entities.Bank;
 import com.longware.financetracker.entities.BankTransaction;
 import com.longware.financetracker.entities.Deposit;
@@ -33,8 +34,9 @@ import lombok.extern.java.Log;
 @Log
 public class DocumentConversionUtil {
 
-    public static final String[] columnNames = { "DATE", "DESCRIPTION", "BANK", "AMOUNT", "DEPOSIT AMOUNT", "MERCHANT",
-            "WITHDRAWAL AMOUNT", "EXPENSE", "DEPOSIT", "INCOME", "VENDOR", "DEPOSIT CATEGORY", "EXPENSE_CATEGORY" };
+    public static final String[] columnNames = { "DATE", "DESCRIPTION", "BANK", "AMOUNT", "EXPENSE", "DEPOSIT",
+            "VENDOR",
+            "DEPOSIT CATEGORY", "EXPENSE CATEGORY" };
 
     /**
      * Convert an uploaded XLSX, CSV, or JSON document into a WorkBook object
@@ -66,20 +68,7 @@ public class DocumentConversionUtil {
 
         Sheet sheet = workbook.getSheetAt(0); // Assuming sheet 0 contains the bank transactions
 
-        // Find the column indexes based on the column names
-        int[] columnIndexes = new int[columnNames.length];
         Row headerRow = sheet.getRow(0);
-        for (int i = 0; i < columnNames.length; i++) {
-            String columnName = columnNames[i];
-            for (int j = 0; j < headerRow.getLastCellNum(); j++) {
-                Cell cell = headerRow.getCell(j);
-                if (cell != null && cell.getCellType() == CellType.STRING
-                        && columnName.equals(cell.getStringCellValue().toUpperCase())) {
-                    columnIndexes[i] = j;
-                    break;
-                }
-            }
-        }
 
         // Iterate through the rows and create BankTransaction objects
         Iterator<Row> rowIterator = sheet.iterator();
@@ -91,11 +80,10 @@ public class DocumentConversionUtil {
             Expense expense = new Expense();
             Deposit deposit = new Deposit();
 
-            for (int i = 0; i < columnIndexes.length; i++) {
-                int columnIndex = columnIndexes[i];
-                Cell cell = row.getCell(columnIndex);
+            for (int i = 0; i < headerRow.getLastCellNum(); i++) {
+                Cell cell = row.getCell(i);
                 if (cell != null) {
-                    String columnHeader = headerRow.getCell(columnIndex).getStringCellValue().toUpperCase();
+                    String columnHeader = headerRow.getCell(i).getStringCellValue().toUpperCase();
                     switch (columnHeader) {
                         case "DATE":
                             bankTransaction.setTransactionDate(cell.getDateCellValue());
@@ -140,9 +128,12 @@ public class DocumentConversionUtil {
                                     .description(cell.getStringCellValue()).build();
                             deposit.setDepositCategory(depositCategory);
                             break;
-                        case "EXPENSE_CATEGORY":
+                        case "EXPENSE CATEGORY":
                             expense.setExpenseCategory(ExpenseCategory.builder().description(cell.getStringCellValue())
                                     .userAccount(bankTransaction.getUserAccount()).build());
+                            break;
+                        default:
+                            log.log(Level.INFO, "Encountered unknown column header: {0}", columnHeader);
                             break;
 
                     }
@@ -172,4 +163,87 @@ public class DocumentConversionUtil {
         return file;
     }
 
+    /**
+     * Convert a List of BankTransactions into an XLSX file
+     *
+     * @param bankTransactions the List of BankTransactions to convert
+     * @param filePath         the file path to save the XLSX file
+     * @throws IOException if an I/O error occurs
+     */
+    public static File convertBankTransactionsToXlsx(Iterable<BankTransaction> bankTransactions, String filePath)
+            throws IOException {
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Bank Transactions");
+
+            // Create header row
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < columnNames.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columnNames[i]);
+            }
+
+            // Create data rows
+            int rowNum = 1;
+            for (BankTransaction transaction : bankTransactions) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(transaction.getTransactionDate());
+                row.createCell(1).setCellValue(transaction.getDescription());
+                row.createCell(2)
+                        .setCellValue(transaction.getBank() != null ? transaction.getBank().getDescription() : null);
+                row.createCell(3).setCellValue(transaction.getAmount());
+                row.createCell(4)
+                        .setCellValue(transaction.getVendor() != null && transaction.getVendor().getExpense() != null
+                                ? transaction.getVendor().getExpense().getDescription()
+                                : null);
+                row.createCell(5).setCellValue(
+                        transaction.getDeposit() != null ? transaction.getDeposit().getDescription() : null);
+                row.createCell(6).setCellValue(
+                        transaction.getDeposit() != null && transaction.getDeposit().getDepositCategory() != null
+                                ? transaction.getDeposit().getDepositCategory().getDescription()
+                                : null);
+                row.createCell(7).setCellValue(
+                        transaction.getVendor() != null ? transaction.getVendor().getDescription() : null);
+                row.createCell(8)
+                        .setCellValue(transaction.getDeposit() != null
+                                && transaction.getDeposit().getDepositCategory() != null
+                                && transaction.getVendor() != null && transaction.getVendor().getExpense() != null
+                                && transaction.getVendor().getExpense().getExpenseCategory() != null
+                                        ? transaction.getVendor().getExpense().getExpenseCategory().getDescription()
+                                        : null);
+            }
+
+            // Write the workbook to the file
+            try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                workbook.write(fos);
+            }
+        }
+
+        return new File(filePath);
+    }
+
+    /**
+     * Convert a List of BankTransactions into a CSV file
+     *
+     * @param bankTransactions the List of BankTransactions to convert
+     * @param filePath         the file path to save the CSV file
+     * @throws IOException if an I/O error occurs
+     */
+    public static void convertBankTransactionsToCsv(List<BankTransaction> bankTransactions, String filePath)
+            throws IOException {
+        // Implement the logic to convert BankTransactions to CSV format and save it to
+        // the file
+    }
+
+    /**
+     * Convert a List of BankTransactions into a JSON file
+     *
+     * @param bankTransactions the List of BankTransactions to convert
+     * @param filePath         the file path to save the JSON file
+     * @throws IOException if an I/O error occurs
+     */
+    public static void convertBankTransactionsToJson(List<BankTransaction> bankTransactions, String filePath)
+            throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writeValue(new File(filePath), bankTransactions);
+    }
 }

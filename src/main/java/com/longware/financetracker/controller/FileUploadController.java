@@ -104,6 +104,9 @@ public class FileUploadController {
                             Optional.ofNullable(vendor.getExpense())
                                     .ifPresent(expense -> {
                                         expense.setUserAccount(userAccount);
+                                        if (expense.getExpenseCategory() != null) {
+                                            expense.getExpenseCategory().setUserAccount(userAccount);
+                                        }
                                         Optional<ExpenseCategory> expenseCategoryOptional = expenseCategoryService
                                                 .getEntity(expense.getExpenseCategory());
                                         expense.setExpenseCategory(expenseCategoryOptional.orElseGet(
@@ -118,6 +121,9 @@ public class FileUploadController {
                 Optional.ofNullable(bankTransaction.getDeposit())
                         .ifPresent(deposit -> {
                             deposit.setUserAccount(userAccount);
+                            if (deposit.getDepositCategory() != null) {
+                                deposit.getDepositCategory().setUserAccount(userAccount);
+                            }
                             Optional<DepositCategory> depositCategoryOptional = depositCategoryService
                                     .getEntity(deposit.getDepositCategory());
                             deposit.setDepositCategory(depositCategoryOptional
