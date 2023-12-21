@@ -139,7 +139,6 @@ public class DocumentConversionUtil {
                     }
                 }
             }
-            log.log(Level.INFO, "Bank transaction: {0}", bankTransaction);
 
             bankTransactions.add(bankTransaction);
         }
