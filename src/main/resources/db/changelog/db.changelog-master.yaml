@@ -27,7 +27,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: amount
-                  type: FLOAT(12)
+                  type: DECIMAL(19, 2)
               - column:
                   name: bank_id
                   type: BIGINT
@@ -43,7 +43,7 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: transaction_date
-                  type: datetime
+                  type: date
               - column:
                   name: user_id
                   type: BIGINT

@@ -128,19 +128,21 @@ public class FileUploadController {
                             Optional<Deposit> depositOptional = depositService.getEntity(deposit);
                             bankTransaction.setDeposit(depositOptional.orElseGet(() -> depositService.save(deposit)));
                         });
-                Optional<BankTransaction> existingBankTransactionOptional = bankTransactionService.getEntity(bankTransaction);
+                Optional<BankTransaction> existingBankTransactionOptional = bankTransactionService
+                        .getEntity(bankTransaction);
                 if (existingBankTransactionOptional.isPresent()) {
                     BankTransaction existingBankTransaction = existingBankTransactionOptional.get();
                     bankTransaction.setId(existingBankTransaction.getId());
-                } 
-                bankTransactionService.save(bankTransaction);               
+                }
+                bankTransactionService.save(bankTransaction);
 
             } catch (Exception e) {
                 log.log(Level.SEVERE, "Error occurred while saving bank transaction", e);
                 // Handle the error here
                 return;
             }
-            log.log(Level.INFO, "{0} Bank transaction saved successfully", bankTransactions.size());
+
         });
+        log.log(Level.INFO, "{0} Bank transaction saved successfully", bankTransactions.size());
     }
 }

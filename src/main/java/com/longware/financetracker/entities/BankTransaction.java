@@ -1,6 +1,7 @@
 package com.longware.financetracker.entities;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -24,11 +25,11 @@ public class BankTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Float amount;
+    private BigDecimal amount;
     private String description;
     private String payee;
     private String transactionType;
-    private Date transactionDate;
+    private LocalDate transactionDate;
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")

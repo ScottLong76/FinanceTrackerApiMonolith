@@ -3,7 +3,11 @@ package com.longware.financetracker.util;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -86,7 +90,9 @@ public class DocumentConversionUtil {
                     String columnHeader = headerRow.getCell(i).getStringCellValue().toUpperCase();
                     switch (columnHeader) {
                         case "DATE":
-                            bankTransaction.setTransactionDate(cell.getDateCellValue());
+                            Date date = cell.getDateCellValue();
+                            LocalDate transactionDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                            bankTransaction.setTransactionDate(transactionDate);
                             break;
                         case "DESCRIPTION":
                             bankTransaction.setDescription(cell.getStringCellValue());
@@ -95,13 +101,13 @@ public class DocumentConversionUtil {
                             bankTransaction.setBank(Bank.builder().description(cell.getStringCellValue()).build());
                             break;
                         case "AMOUNT":
-                            bankTransaction.setAmount((float) cell.getNumericCellValue());
+                            bankTransaction.setAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
                             break;
                         case "DEPOSIT AMOUNT":
-                            bankTransaction.setAmount((float) cell.getNumericCellValue());
+                            bankTransaction.setAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
                             break;
                         case "WITHDRAWAL AMOUNT":
-                            bankTransaction.setAmount((float) cell.getNumericCellValue());
+                            bankTransaction.setAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
                             break;
                         case "EXPENSE":
                             expense.setDescription(cell.getStringCellValue());
@@ -131,9 +137,6 @@ public class DocumentConversionUtil {
                         case "EXPENSE CATEGORY":
                             expense.setExpenseCategory(ExpenseCategory.builder().description(cell.getStringCellValue())
                                     .userAccount(bankTransaction.getUserAccount()).build());
-                            break;
-                        default:
-                            log.log(Level.INFO, "Encountered unknown column header: {0}", columnHeader);
                             break;
 
                     }
@@ -189,7 +192,7 @@ public class DocumentConversionUtil {
                 row.createCell(1).setCellValue(transaction.getDescription());
                 row.createCell(2)
                         .setCellValue(transaction.getBank() != null ? transaction.getBank().getDescription() : null);
-                row.createCell(3).setCellValue(transaction.getAmount());
+                row.createCell(3).setCellValue(transaction.getAmount().doubleValue());
                 row.createCell(4)
                         .setCellValue(transaction.getVendor() != null && transaction.getVendor().getExpense() != null
                                 ? transaction.getVendor().getExpense().getDescription()
