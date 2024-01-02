@@ -9,11 +9,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.Attribute.Use;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.Bank;
 import com.longware.financetracker.entities.BankTransaction;
+import com.longware.financetracker.entities.Deposit;
 import com.longware.financetracker.entities.UserAccount;
+import com.longware.financetracker.entities.Vendor;
 import com.longware.financetracker.repository.BankTransactionRepository;
 import com.webcohesion.ofx4j.domain.data.MessageSetType;
 import com.webcohesion.ofx4j.domain.data.ResponseEnvelope;
@@ -181,6 +184,33 @@ public class BankTransactionService {
             log.severe(Arrays.toString(ex.getStackTrace()));
         }
         return parsedTransactions;
+    }
+
+    public void updateBankTransactionsByEntityAndRegex(Object entityObject, List<String> regexList,
+            UserAccount userAccount) {
+        if (!(entityObject instanceof Vendor || entityObject instanceof Deposit)) {
+            log.warning("Invalid entity type passed to updateBankTransactionsByEntityAndRegex method");
+            return;
+        }
+        int updatedTransactions = 0;
+        Iterable<BankTransaction> bankTransactions = bankTransactionRepository.findByUserAccount(userAccount);
+        for (BankTransaction bankTransaction : bankTransactions) {
+            for (String regex : regexList) {
+                if (bankTransaction.getDescription().matches(regex)) {
+                    updatedTransactions++;
+                    if (entityObject instanceof Vendor) {
+                        bankTransaction.setVendor((Vendor) entityObject);
+                    } else if (entityObject instanceof Deposit) {
+                        bankTransaction.setDeposit((Deposit) entityObject);
+                    }
+                    break;
+                }
+            }
+        }
+
+        log.info("Updated " + updatedTransactions + " bank transactions");
+        // Save the updated Bank Transactions to the database
+        bankTransactionRepository.saveAll(bankTransactions);
     }
 
 }

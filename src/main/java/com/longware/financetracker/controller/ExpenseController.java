@@ -1,5 +1,7 @@
 package com.longware.financetracker.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,17 +35,17 @@ public class ExpenseController {
 
     // Write a method to return all Expense objects.
     @RequestMapping("/getAllExpenses")
-    public Iterable<Expense> getAllExpenses() {
+    public Iterable<Expense> getAllExpenses(Principal principal) {
         return expenseRepository.findAll();
     }
 
     @RequestMapping("/saveExpense")
-    public Expense saveExpense(Expense expense) {
+    public Expense saveExpense(Expense expense, Principal principal) {
         return expenseRepository.save(expense);
     }
 
     @RequestMapping("/deleteExpense")
-    public void deleteExpense(Expense expense) {
+    public void deleteExpense(Expense expense, Principal principal) {
         expenseRepository.delete(expense);
     }
 

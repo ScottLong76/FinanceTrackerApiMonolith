@@ -1,5 +1,7 @@
 package com.longware.financetracker.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,23 +30,24 @@ public class ShoppingItemCategoryController {
 
     // Write a method to return a ShoppingItemCategory object by its id.
     @RequestMapping("/getShoppingItemCategoryById")
-    public ShoppingItemCategory getShoppingItemCategoryById(Long id) {
+    public ShoppingItemCategory getShoppingItemCategoryById(Long id, Principal principal) {
         return shoppingItemCategoryRepository.findById(id).orElse(null);
     }
 
     // Write a method to return all ShoppingItemCategory objects.
     @RequestMapping("/getAllShoppingItemCategories")
-    public Iterable<ShoppingItemCategory> getAllShoppingItemCategories() {
+    public Iterable<ShoppingItemCategory> getAllShoppingItemCategories(Principal principal) {
         return shoppingItemCategoryRepository.findAll();
     }
 
     @RequestMapping("/saveShoppingItemCategory")
-    public ShoppingItemCategory saveShoppingItemCategory(ShoppingItemCategory shoppingItemCategory) {
+    public ShoppingItemCategory saveShoppingItemCategory(ShoppingItemCategory shoppingItemCategory,
+            Principal principal) {
         return shoppingItemCategoryRepository.save(shoppingItemCategory);
     }
 
     @RequestMapping("/deleteShoppingItemCategory")
-    public void deleteShoppingItemCategory(ShoppingItemCategory shoppingItemCategory) {
+    public void deleteShoppingItemCategory(ShoppingItemCategory shoppingItemCategory, Principal principal) {
         shoppingItemCategoryRepository.delete(shoppingItemCategory);
     }
 

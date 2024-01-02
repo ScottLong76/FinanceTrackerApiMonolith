@@ -1,5 +1,7 @@
 package com.longware.financetracker.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,23 +29,23 @@ public class ShoppingItemController {
 
     // Write a method to return a ShoppingItem object by its id.
     @RequestMapping("/getShoppingItemById")
-    public ShoppingItem getShoppingItemById(Long id) {
+    public ShoppingItem getShoppingItemById(Long id, Principal principal) {
         return shoppingItemRepository.findById(id).orElse(null);
     }
 
     // Write a method to return all ShoppingItem objects.
     @RequestMapping("/getAllShoppingItems")
-    public Iterable<ShoppingItem> getAllShoppingItems() {
+    public Iterable<ShoppingItem> getAllShoppingItems(Principal principal) {
         return shoppingItemRepository.findAll();
     }
 
     @RequestMapping("/saveShoppingItem")
-    public ShoppingItem saveShoppingItem(ShoppingItem shoppingItem) {
+    public ShoppingItem saveShoppingItem(ShoppingItem shoppingItem, Principal principal) {
         return shoppingItemRepository.save(shoppingItem);
     }
 
     @RequestMapping("/deleteShoppingItem")
-    public void deleteShoppingItem(ShoppingItem shoppingItem) {
+    public void deleteShoppingItem(ShoppingItem shoppingItem, Principal principal) {
         shoppingItemRepository.delete(shoppingItem);
     }
 

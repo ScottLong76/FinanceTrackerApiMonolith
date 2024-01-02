@@ -1,5 +1,7 @@
 package com.longware.financetracker.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,17 +35,17 @@ public class VendorAccountController {
 
     // Write a method to return all VendorAccount objects.
     @RequestMapping("/getAllVendorAccounts")
-    public Iterable<VendorAccount> getAllVendorAccounts() {
+    public Iterable<VendorAccount> getAllVendorAccounts(Principal principal) {
         return vendorAccountRepository.findAll();
     }
 
     @RequestMapping("/saveVendorAccount")
-    public VendorAccount saveVendorAccount(VendorAccount vendorAccount) {
+    public VendorAccount saveVendorAccount(VendorAccount vendorAccount, Principal principal) {
         return vendorAccountRepository.save(vendorAccount);
     }
 
     @RequestMapping("/deleteVendorAccount")
-    public void deleteVendorAccount(VendorAccount vendorAccount) {
+    public void deleteVendorAccount(VendorAccount vendorAccount, Principal principal) {
         vendorAccountRepository.delete(vendorAccount);
     }
 

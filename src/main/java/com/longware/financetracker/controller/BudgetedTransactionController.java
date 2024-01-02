@@ -1,5 +1,7 @@
 package com.longware.financetracker.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,23 +29,23 @@ public class BudgetedTransactionController {
 
     // Write a method to return a BudgetedTransaction object by its id.
     @RequestMapping("/getBudgetedTransactionById")
-    public BudgetedTransaction getBudgetedTransactionById(Long id) {
+    public BudgetedTransaction getBudgetedTransactionById(Long id, Principal principal) {
         return budgetedTransactionRepository.findById(id).orElse(null);
     }
 
     // Write a method to return all BudgetedTransaction objects.
     @RequestMapping("/getAllBudgetedTransactions")
-    public Iterable<BudgetedTransaction> getAllBudgetedTransactions() {
+    public Iterable<BudgetedTransaction> getAllBudgetedTransactions(Principal principal) {
         return budgetedTransactionRepository.findAll();
     }
 
     @RequestMapping("/saveBudgetedTransaction")
-    public BudgetedTransaction saveBudgetedTransaction(BudgetedTransaction budgetedTransaction) {
+    public BudgetedTransaction saveBudgetedTransaction(BudgetedTransaction budgetedTransaction, Principal principal) {
         return budgetedTransactionRepository.save(budgetedTransaction);
     }
 
     @RequestMapping("/deleteBudgetedTransaction")
-    public void deleteBudgetedTransaction(BudgetedTransaction budgetedTransaction) {
+    public void deleteBudgetedTransaction(BudgetedTransaction budgetedTransaction, Principal principal) {
         budgetedTransactionRepository.delete(budgetedTransaction);
     }
 

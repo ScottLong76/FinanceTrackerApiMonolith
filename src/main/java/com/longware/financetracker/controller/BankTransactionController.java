@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,23 +44,23 @@ public class BankTransactionController {
 
     // Implement a method to return all BankTransaction objects.
     @RequestMapping("/getAllBankTransactions")
-    public Iterable<BankTransaction> getAllBankTransactions() {
+    public Iterable<BankTransaction> getAllBankTransactions(@AuthenticationPrincipal Principal principal) {
         return bankTransactionService.findAll();
     }
 
     @RequestMapping("/saveBankTransaction")
-    public BankTransaction saveBankTransaction(BankTransaction bankTransaction) {
+    public BankTransaction saveBankTransaction(BankTransaction bankTransaction,
+            @AuthenticationPrincipal Principal principal) {
         return bankTransactionService.save(bankTransaction);
     }
 
     @RequestMapping("/deleteBankTransaction")
-    public void deleteBankTransaction(BankTransaction bankTransaction) {
+    public void deleteBankTransaction(BankTransaction bankTransaction, @AuthenticationPrincipal Principal principal) {
         bankTransactionService.delete(bankTransaction);
     }
 
     @RequestMapping("/exportBankTransactions")
-    public File exportBankTransactions(Principal principal) {
-
+    public File exportBankTransactions(@AuthenticationPrincipal Principal principal) {
         File file = null;
         try {
             String username = principal.getName(); // Get the username of the authenticated user

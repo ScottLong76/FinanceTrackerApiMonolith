@@ -1,5 +1,7 @@
 package com.longware.financetracker.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,23 +29,23 @@ public class BillController {
 
     // Write a method to return a Bill object by its id.
     @RequestMapping("/getBillById")
-    public Bill getBillById(Long id) {
+    public Bill getBillById(Long id, Principal principal) {
         return billRepository.findById(id).orElse(null);
     }
 
     // Write a method to return all Bill objects.
     @RequestMapping("/getAllBills")
-    public Iterable<Bill> getAllBills() {
+    public Iterable<Bill> getAllBills(Principal principal) {
         return billRepository.findAll();
     }
 
     @RequestMapping("/saveBill")
-    public Bill saveBill(Bill bill) {
+    public Bill saveBill(Bill bill, Principal principal) {
         return billRepository.save(bill);
     }
 
     @RequestMapping("/deleteBill")
-    public void deleteBill(Bill bill) {
+    public void deleteBill(Bill bill, Principal principal) {
         billRepository.delete(bill);
     }
 

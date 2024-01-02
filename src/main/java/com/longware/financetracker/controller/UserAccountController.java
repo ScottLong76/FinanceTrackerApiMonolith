@@ -1,5 +1,7 @@
 package com.longware.financetracker.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,23 +29,23 @@ public class UserAccountController {
 
     // Write a method to return a UserAccount object by its id.
     @RequestMapping("/getUserAccountById")
-    public UserAccount getUserAccountById(Long id) {
+    public UserAccount getUserAccountById(Long id, Principal principal) {
         return userAccountRepository.findById(id).orElse(null);
     }
 
     // Write a method to return all UserAccount objects.
     @RequestMapping("/getAllUserAccounts")
-    public Iterable<UserAccount> getAllUserAccounts() {
+    public Iterable<UserAccount> getAllUserAccounts(Principal principal) {
         return userAccountRepository.findAll();
     }
 
     @RequestMapping("/saveUserAccount")
-    public UserAccount saveUserAccount(UserAccount userAccount) {
+    public UserAccount saveUserAccount(UserAccount userAccount, Principal principal) {
         return userAccountRepository.save(userAccount);
     }
 
     @RequestMapping("/deleteUserAccount")
-    public void deleteUserAccount(UserAccount userAccount) {
+    public void deleteUserAccount(UserAccount userAccount, Principal principal) {
         userAccountRepository.delete(userAccount);
     }
 

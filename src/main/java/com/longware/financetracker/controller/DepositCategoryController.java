@@ -1,5 +1,7 @@
 package com.longware.financetracker.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,23 +29,23 @@ public class DepositCategoryController {
 
     // Write a method to return a DepositCategory object by its id.
     @RequestMapping("/getDepositCategoryById")
-    public DepositCategory getDepositCategoryById(Long id) {
+    public DepositCategory getDepositCategoryById(Long id, Principal principal) {
         return depositCategoryRepository.findById(id).orElse(null);
     }
 
     // Write a method to return all DepositCategory objects.
     @RequestMapping("/getAllDepositCategories")
-    public Iterable<DepositCategory> getAllDepositCategories() {
+    public Iterable<DepositCategory> getAllDepositCategories(Principal principal) {
         return depositCategoryRepository.findAll();
     }
 
     @RequestMapping("/saveDepositCategory")
-    public DepositCategory saveDepositCategory(DepositCategory depositCategory) {
+    public DepositCategory saveDepositCategory(DepositCategory depositCategory, Principal principal) {
         return depositCategoryRepository.save(depositCategory);
     }
 
     @RequestMapping("/deleteDepositCategory")
-    public void deleteDepositCategory(DepositCategory depositCategory) {
+    public void deleteDepositCategory(DepositCategory depositCategory, Principal principal) {
         depositCategoryRepository.delete(depositCategory);
     }
 

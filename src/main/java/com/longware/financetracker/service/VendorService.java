@@ -57,4 +57,8 @@ public class VendorService {
         return vendorRepository.getEntity(vendor);
     }
 
+    public void delete(Vendor vendor) {
+        vendorRepository.delete(vendor);
+    }
+
 }

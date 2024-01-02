@@ -1,5 +1,7 @@
 package com.longware.financetracker.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,23 +29,23 @@ public class LoginEventController {
 
     // Write a method to return a LoginEvent object by its id.
     @RequestMapping("/getLoginEventById")
-    public LoginEvent getLoginEventById(Long id) {
+    public LoginEvent getLoginEventById(Long id, Principal principal) {
         return loginEventRepository.findById(id).orElse(null);
     }
 
     // Write a method to return all LoginEvent objects.
     @RequestMapping("/getAllLoginEvents")
-    public Iterable<LoginEvent> getAllLoginEvents() {
+    public Iterable<LoginEvent> getAllLoginEvents(Principal principal) {
         return loginEventRepository.findAll();
     }
 
     @RequestMapping("/saveLoginEvent")
-    public LoginEvent saveLoginEvent(LoginEvent loginEvent) {
+    public LoginEvent saveLoginEvent(LoginEvent loginEvent, Principal principal) {
         return loginEventRepository.save(loginEvent);
     }
 
     @RequestMapping("/deleteLoginEvent")
-    public void deleteLoginEvent(LoginEvent loginEvent) {
+    public void deleteLoginEvent(LoginEvent loginEvent, Principal principal) {
         loginEventRepository.delete(loginEvent);
     }
 

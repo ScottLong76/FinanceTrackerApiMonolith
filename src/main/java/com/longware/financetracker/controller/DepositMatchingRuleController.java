@@ -1,5 +1,7 @@
 package com.longware.financetracker.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,23 +29,23 @@ public class DepositMatchingRuleController {
 
     // Write a method to return a DepositMatchingRule object by its id.
     @RequestMapping("/getDepositMatchingRuleById")
-    public DepositMatchingRule getDepositMatchingRuleById(Long id) {
+    public DepositMatchingRule getDepositMatchingRuleById(Long id, Principal principal) {
         return depositMatchingRuleRepository.findById(id).orElse(null);
     }
 
     // Write a method to return all DepositMatchingRule objects.
     @RequestMapping("/getAllDepositMatchingRules")
-    public Iterable<DepositMatchingRule> getAllDepositMatchingRules() {
+    public Iterable<DepositMatchingRule> getAllDepositMatchingRules(Principal principal) {
         return depositMatchingRuleRepository.findAll();
     }
 
     @RequestMapping("/saveDepositMatchingRule")
-    public DepositMatchingRule saveDepositMatchingRule(DepositMatchingRule depositMatchingRule) {
+    public DepositMatchingRule saveDepositMatchingRule(DepositMatchingRule depositMatchingRule, Principal principal) {
         return depositMatchingRuleRepository.save(depositMatchingRule);
     }
 
     @RequestMapping("/deleteDepositMatchingRule")
-    public void deleteDepositMatchingRule(DepositMatchingRule depositMatchingRule) {
+    public void deleteDepositMatchingRule(DepositMatchingRule depositMatchingRule, Principal principal) {
         depositMatchingRuleRepository.delete(depositMatchingRule);
     }
 
