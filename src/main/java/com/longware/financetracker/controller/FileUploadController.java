@@ -145,4 +145,27 @@ public class FileUploadController {
         });
         log.log(Level.INFO, "{0} Bank transaction saved successfully", bankTransactions.size());
     }
+
+    public List<BankTransaction> processOfxFile(MultipartFile file, Principal principal) {
+        List<BankTransaction> bankTransactions = null;
+        try {
+            File convertedFile = DocumentConversionUtil.convertMultipartFileToFile(file);
+            bankTransactions = DocumentConversionUtil.convertFileToBankTransactions(convertedFile);
+            String username = principal.getName(); // Get the username of the authenticated user
+            UserAccount userAccount = UserAccount.builder().userName(username).build();
+
+            Optional<UserAccount> userAccountOptional = userAccountService.getEntity(userAccount);
+
+            if (userAccountOptional.isEmpty()) {
+                userAccount = userAccountService.save(userAccount);
+            } else {
+                userAccount = userAccountOptional.get();
+            }
+            saveBankTransactions(bankTransactions, userAccount);
+        } catch (Exception e) {
+            log.log(Level.WARNING, "Error occurred while uploading file", e);
+            // Handle the error here
+        }
+        return bankTransactions;
+    }
 }

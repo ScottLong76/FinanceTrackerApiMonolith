@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Attribute.Use;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.Bank;
@@ -88,7 +87,7 @@ public class BankTransactionService {
         return bankTransactionRepository.getEntity(bankTransaction);
     }
 
-    public List<BankTransaction> processOFXFile(File file, Bank selectedUploadBank) {
+    public List<BankTransaction> processOFXFile(File file, Bank selectedUploadBank, UserAccount userAccount) {
         List<BankTransaction> parsedTransactions = new ArrayList<BankTransaction>();
         try {
 
@@ -123,11 +122,16 @@ public class BankTransactionService {
                 List<Transaction> transactions = transactionList.getTransactions();
                 for (Transaction ofxTransaction : transactions) {
                     BankTransaction transaction = new BankTransaction();
+                    transaction.setUserAccount(userAccount);
                     String description = "";
                     if (ofxTransaction.getMemo() != null) {
                         description += ofxTransaction.getMemo() + " ";
                     }
                     transaction.setDescription(description);
+
+                    if (ofxTransaction.getBigDecimalAmount() != null) {
+                        transaction.setAmount(ofxTransaction.getBigDecimalAmount());
+                    }
 
                     LocalDate transactionDate = null;
                     if (ofxTransaction.getDateInitiated() != null) {
