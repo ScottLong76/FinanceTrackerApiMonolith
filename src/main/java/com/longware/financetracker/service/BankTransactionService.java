@@ -217,4 +217,8 @@ public class BankTransactionService {
         bankTransactionRepository.saveAll(bankTransactions);
     }
 
+    public Iterable<BankTransaction> findAllByUserAccount(UserAccount userAccount) {
+        return bankTransactionRepository.findAllByUserAccount(userAccount);
+    }
+
 }

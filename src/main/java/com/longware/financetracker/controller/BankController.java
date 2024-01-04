@@ -1,13 +1,14 @@
 package com.longware.financetracker.controller;
 
 import java.security.Principal;
-import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.longware.financetracker.entities.Bank;
-import com.longware.financetracker.repository.BankRepository;
+import com.longware.financetracker.entities.UserAccount;
+import com.longware.financetracker.service.BankService;
+import com.longware.financetracker.util.UserAccountUtil;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,8 @@ import lombok.Setter;
 @Setter
 public class BankController {
 
-    private final BankRepository bankRepository;
+    private final BankService bankService;
+    private final UserAccountUtil userAccountUtil;
 
     /**
      * This method returns a Bank object by its id.
@@ -34,7 +36,8 @@ public class BankController {
      */
     @RequestMapping("/getBankById")
     public Bank getBankById(Long id, Principal principal) {
-        return bankRepository.findById(id).orElse(null);
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return bankService.findById(id).orElse(null);
     }
 
     /**
@@ -44,8 +47,9 @@ public class BankController {
      * @return A list of all Bank objects.
      */
     @RequestMapping("/getAllBanks")
-    public List<Bank> getAllBanks(Principal principal) {
-        return bankRepository.findAll();
+    public Iterable<Bank> getAllBanks(Principal principal) {
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return bankService.findAll();
     }
 
     /**
@@ -57,7 +61,8 @@ public class BankController {
      */
     @RequestMapping("/saveBank")
     public Bank saveBank(Bank bank, Principal principal) {
-        return bankRepository.save(bank);
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return bankService.save(bank);
     }
 
     /**
@@ -68,7 +73,8 @@ public class BankController {
      */
     @RequestMapping("/deleteBank")
     public void deleteBank(Bank bank, Principal principal) {
-        bankRepository.delete(bank);
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        bankService.delete(bank);
     }
 
 }

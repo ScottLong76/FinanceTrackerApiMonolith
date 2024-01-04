@@ -3,6 +3,7 @@ package com.longware.financetracker.service;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.BudgetedTransaction;
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.repository.BudgetedTransactionRepository;
 
 import lombok.Getter;
@@ -42,6 +43,10 @@ public class BudgetedTransactionService {
 
     public Iterable<BudgetedTransaction> findAll() {
         return budgetedTransactionRepository.findAll();
+    }
+
+    public Iterable<BudgetedTransaction> findAllByUserAccount(UserAccount userAccount) {
+        return budgetedTransactionRepository.findAllByUserAccount(userAccount);
     }
 
 }

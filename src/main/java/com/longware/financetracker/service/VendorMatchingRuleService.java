@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.entities.VendorMatchingRule;
 import com.longware.financetracker.repository.VendorMatchingRuleRepository;
 
@@ -48,6 +49,10 @@ public class VendorMatchingRuleService {
 
     public Optional<VendorMatchingRule> findById(Long id) {
         return vendorMatchingRuleRepository.findById(id);
+    }
+
+    public Iterable<VendorMatchingRule> findAllByUserAccount(UserAccount userAccount) {
+        return vendorMatchingRuleRepository.findAllByUserAccount(userAccount);
     }
 
 }

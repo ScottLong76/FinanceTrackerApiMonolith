@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.ShoppingItemPurchase;
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.repository.ShoppingItemPurchaseRepository;
 
 import lombok.Getter;
@@ -44,6 +45,10 @@ public class ShoppingItemPurchaseService {
 
     public Optional<ShoppingItemPurchase> findById(Long id) {
         return shoppingItemPurchaseRepository.findById(id);
+    }
+
+    public Iterable<ShoppingItemPurchase> findAllByUserAccount(UserAccount userAccount) {
+        return shoppingItemPurchaseRepository.findAllByUserAccount(userAccount);
     }
 
 }

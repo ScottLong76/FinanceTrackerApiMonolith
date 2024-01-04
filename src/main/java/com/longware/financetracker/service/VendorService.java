@@ -61,4 +61,8 @@ public class VendorService {
         vendorRepository.delete(vendor);
     }
 
+    public Iterable<Vendor> findAllByUserAccount(UsrAccount userAccount) {
+        return vendorRepository.findAllByUserAccount(userAccount);
+    }
+
 }

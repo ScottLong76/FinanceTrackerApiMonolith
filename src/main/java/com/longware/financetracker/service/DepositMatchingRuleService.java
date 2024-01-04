@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.DepositMatchingRule;
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.repository.DepositMatchingRuleRepository;
 
 import lombok.Getter;
@@ -47,6 +48,10 @@ public class DepositMatchingRuleService {
 
     public Iterable<DepositMatchingRule> findAll() {
         return depositMatchingRuleRepository.findAll();
+    }
+
+    public Iterable<DepositMatchingRule> findAllByUserAccount(UserAccount userAccount) {
+        return depositMatchingRuleRepository.findAllByUserAccount(userAccount);
     }
 
 }

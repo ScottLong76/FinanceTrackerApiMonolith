@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.Deposit;
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.repository.DepositRepository;
 
 import lombok.Getter;
@@ -55,6 +56,10 @@ public class DepositService {
 
     public Optional<Deposit> getEntity(Deposit deposit) {
         return depositRepository.getEntity(deposit);
+    }
+
+    public Iterable<Deposit> findAllByUserAccount(UserAccount userAccount) {
+        return depositRepository.findAllByUserAccount(userAccount);
     }
 
 }

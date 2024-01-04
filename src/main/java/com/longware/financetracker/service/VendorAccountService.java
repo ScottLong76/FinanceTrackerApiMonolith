@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.entities.VendorAccount;
 import com.longware.financetracker.repository.VendorAccountRepository;
 
@@ -47,6 +48,10 @@ public class VendorAccountService {
 
     public Optional<VendorAccount> findById(Long id) {
         return vendorAccountRepository.findById(id);
+    }
+
+    publi Iterable<VendorAccount> findAllByUserAccount(UserAccount userAccount) {
+        return vendorAccountRepository.findAllByUserAccount(userAccount);
     }
 
 }

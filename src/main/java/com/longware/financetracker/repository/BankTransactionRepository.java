@@ -19,8 +19,6 @@ public interface BankTransactionRepository extends EntityRepositoryInterface<Ban
         public Optional<BankTransaction> findByDescriptionAndAmountAndTransactionDateAndUserAccount(String description,
                         BigDecimal transactionAmount, LocalDate transactionDate, UserAccount userAccount);
 
-        public Iterable<BankTransaction> findByUserAccount(UserAccount userAccount);
-
         public default boolean entityExists(BankTransaction bankTransaction) {
                 return existsByDescriptionAndAmountAndTransactionDateAndUserAccount(bankTransaction.getDescription(),
                                 bankTransaction.getAmount(), bankTransaction.getTransactionDate(),

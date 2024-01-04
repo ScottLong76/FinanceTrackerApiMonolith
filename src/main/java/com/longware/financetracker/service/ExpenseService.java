@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.Expense;
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.repository.ExpenseRepository;
 
 import lombok.Getter;
@@ -55,6 +56,10 @@ public class ExpenseService {
 
     public Optional<Expense> getEntity(Expense expense) {
         return expenseRepository.getEntity(expense);
+    }
+
+    public Iterable<Expense> findAllByUserAccount(UserAccount userAccount) {
+        return expenseRepository.findAllByUserAccount(userAccount);
     }
 
 }

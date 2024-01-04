@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.BudgetEntry;
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.repository.BudgetEntryRepository;
 
 import lombok.Getter;
@@ -40,6 +41,10 @@ public class BudgetEntryService {
 
     public Optional<BudgetEntry> findById(Long id) {
         return budgetEntryRepository.findById(id);
+    }
+
+    public Iterable<BudgetEntry> findAllByUserAccount(UserAccount userAccount) {
+        return budgetEntryRepository.findAllByUserAccount(userAccount);
     }
 
 }
