@@ -11,6 +11,8 @@ import com.longware.financetracker.repository.interfaces.EntityRepositoryInterfa
 @Repository
 public interface DepositRepository extends EntityRepositoryInterface<Deposit, Long> {
 
+    public Iterable<Deposit> findAllByUserAccount(UserAccount userAccount);
+
     public boolean existsByDescriptionAndUserAccount(String description, UserAccount userAccount);
 
     public Optional<Deposit> findByDescriptionAndUserAccount(String description, UserAccount userAccount);

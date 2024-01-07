@@ -50,7 +50,7 @@ public class VendorAccountService {
         return vendorAccountRepository.findById(id);
     }
 
-    publi Iterable<VendorAccount> findAllByUserAccount(UserAccount userAccount) {
+    public Iterable<VendorAccount> findAllByUserAccount(UserAccount userAccount) {
         return vendorAccountRepository.findAllByUserAccount(userAccount);
     }
 

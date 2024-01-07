@@ -11,6 +11,8 @@ import com.longware.financetracker.repository.interfaces.EntityRepositoryInterfa
 @Repository
 public interface VendorRepository extends EntityRepositoryInterface<Vendor, Long> {
 
+    public Iterable<Vendor> findAllByUserAccount(UserAccount userAccount);
+
     public boolean existsByDescriptionAndUserAccount(String description, UserAccount userAccount);
 
     public Optional<Vendor> findByDescriptionAndUserAccount(String description, UserAccount userAccount);

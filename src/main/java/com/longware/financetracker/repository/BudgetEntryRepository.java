@@ -12,22 +12,28 @@ import com.longware.financetracker.repository.interfaces.EntityRepositoryInterfa
 @Repository
 public interface BudgetEntryRepository extends EntityRepositoryInterface<BudgetEntry, Long> {
 
-    public boolean existsByStartDateAndFrequencyAndNoteAndScheduledTypeAndScheduledAmountAndUserAccount(Date startDate,
-            String frequency, String note, String scheduledType, double scheduledAmount, UserAccount userAccount);
+        public Iterable<BudgetEntry> findAllByUserAccount(UserAccount userAccount);
 
-    public Optional<BudgetEntry> findByStartDateAndFrequencyAndNoteAndScheduledTypeAndScheduledAmountAndUserAccount(
-            Date startDate, String frequency, String note, String scheduledType, double scheduledAmount,
-            UserAccount userAccount);
+        public boolean existsByStartDateAndFrequencyAndNoteAndScheduledTypeAndScheduledAmountAndUserAccount(
+                        Date startDate,
+                        String frequency, String note, String scheduledType, double scheduledAmount,
+                        UserAccount userAccount);
 
-    public default boolean entityExists(BudgetEntry budgetEntry) {
-        return existsByStartDateAndFrequencyAndNoteAndScheduledTypeAndScheduledAmountAndUserAccount(
-                budgetEntry.getStartDate(), budgetEntry.getFrequency(), budgetEntry.getNote(),
-                budgetEntry.getScheduledType(), budgetEntry.getScheduledAmount(), budgetEntry.getUserAccount());
-    }
+        public Optional<BudgetEntry> findByStartDateAndFrequencyAndNoteAndScheduledTypeAndScheduledAmountAndUserAccount(
+                        Date startDate, String frequency, String note, String scheduledType, double scheduledAmount,
+                        UserAccount userAccount);
 
-    public default Optional<BudgetEntry> getEntity(BudgetEntry budgetEntry) {
-        return findByStartDateAndFrequencyAndNoteAndScheduledTypeAndScheduledAmountAndUserAccount(
-                budgetEntry.getStartDate(), budgetEntry.getFrequency(), budgetEntry.getNote(),
-                budgetEntry.getScheduledType(), budgetEntry.getScheduledAmount(), budgetEntry.getUserAccount());
-    }
+        public default boolean entityExists(BudgetEntry budgetEntry) {
+                return existsByStartDateAndFrequencyAndNoteAndScheduledTypeAndScheduledAmountAndUserAccount(
+                                budgetEntry.getStartDate(), budgetEntry.getFrequency(), budgetEntry.getNote(),
+                                budgetEntry.getScheduledType(), budgetEntry.getScheduledAmount(),
+                                budgetEntry.getUserAccount());
+        }
+
+        public default Optional<BudgetEntry> getEntity(BudgetEntry budgetEntry) {
+                return findByStartDateAndFrequencyAndNoteAndScheduledTypeAndScheduledAmountAndUserAccount(
+                                budgetEntry.getStartDate(), budgetEntry.getFrequency(), budgetEntry.getNote(),
+                                budgetEntry.getScheduledType(), budgetEntry.getScheduledAmount(),
+                                budgetEntry.getUserAccount());
+        }
 }

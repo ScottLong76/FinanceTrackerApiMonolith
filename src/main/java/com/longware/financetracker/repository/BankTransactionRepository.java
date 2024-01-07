@@ -13,6 +13,8 @@ import com.longware.financetracker.repository.interfaces.EntityRepositoryInterfa
 @Repository
 public interface BankTransactionRepository extends EntityRepositoryInterface<BankTransaction, Long> {
 
+        public Iterable<BankTransaction> findAllByUserAccount(UserAccount userAccount);
+
         public boolean existsByDescriptionAndAmountAndTransactionDateAndUserAccount(String description,
                         BigDecimal transactionAmount, LocalDate transactionDate, UserAccount userAccount);
 

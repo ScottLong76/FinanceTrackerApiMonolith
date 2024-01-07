@@ -73,7 +73,7 @@ class BankTransactionServiceTest {
         List<BankTransaction> mockTransactions = new ArrayList<>();
         mockTransactions.add(new BankTransaction());
         mockTransactions.add(new BankTransaction());
-        when(bankTransactionRepository.findByUserAccount(userAccount)).thenReturn(mockTransactions);
+        when(bankTransactionRepository.findAllByUserAccount(userAccount)).thenReturn(mockTransactions);
 
         // Find the bank transactions by user account
         Iterable<BankTransaction> foundTransactions = bankTransactionService.findByUserAccount(userAccount);

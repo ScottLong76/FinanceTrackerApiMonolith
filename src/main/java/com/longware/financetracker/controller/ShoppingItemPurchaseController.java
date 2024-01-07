@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.longware.financetracker.entities.ShoppingItemPurchase;
-import com.longware.financetracker.repository.ShoppingItemPurchaseRepository;
+import com.longware.financetracker.service.ShoppingItemPurchaseService;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import lombok.Setter;
 @Setter
 public class ShoppingItemPurchaseController {
 
-    private final ShoppingItemPurchaseRepository shoppingItemPurchaseRepository;
+    private final ShoppingItemPurchaseService shoppingItemPurchaseService;
 
     // Write methods to create, update, and delete ShoppingItemPurchase objects
     // using
@@ -31,24 +31,13 @@ public class ShoppingItemPurchaseController {
     // Write a method to return a ShoppingItemPurchase object by its id.
     @RequestMapping("/getShoppingItemPurchaseById")
     public ShoppingItemPurchase getShoppingItemPurchaseById(Long id, Principal principal) {
-        return shoppingItemPurchaseRepository.findById(id).orElse(null);
-    }
-
-    // Write a method to return all ShoppingItemPurchase objects.
-    @RequestMapping("/getAllShoppingItemPurchases")
-    public Iterable<ShoppingItemPurchase> getAllShoppingItemPurchases(Principal principal) {
-        return shoppingItemPurchaseRepository.findAll();
+        return shoppingItemPurchaseService.findById(id).orElse(null);
     }
 
     @RequestMapping("/saveShoppingItemPurchase")
     public ShoppingItemPurchase saveShoppingItemPurchase(ShoppingItemPurchase shoppingItemPurchase,
             Principal principal) {
-        return shoppingItemPurchaseRepository.save(shoppingItemPurchase);
-    }
-
-    @RequestMapping("/deleteShoppingItemPurchase")
-    public void deleteShoppingItemPurchase(ShoppingItemPurchase shoppingItemPurchase, Principal principal) {
-        shoppingItemPurchaseRepository.delete(shoppingItemPurchase);
+        return shoppingItemPurchaseService.save(shoppingItemPurchase);
     }
 
 }

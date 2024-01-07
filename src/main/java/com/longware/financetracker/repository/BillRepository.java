@@ -11,19 +11,23 @@ import com.longware.financetracker.repository.interfaces.EntityRepositoryInterfa
 @Repository
 public interface BillRepository extends EntityRepositoryInterface<Bill, Long> {
 
-    public boolean existsByUserAccountAndFixedPaymentAmountAndFixedPaymentsAndPaymentSchedule(UserAccount userAccount,
-            Float fixedPaymentAmount, String fixedPayments, String paymentSchedule);
+        public Iterable<Bill> findAllByUserAccount(UserAccount userAccount);
 
-    public Optional<Bill> findByUserAccountAndFixedPaymentAmountAndFixedPaymentsAndPaymentSchedule(
-            UserAccount userAccount, Float fixedPaymentAmount, String fixedPayments, String paymentSchedule);
+        public boolean existsByUserAccountAndFixedPaymentAmountAndFixedPaymentsAndPaymentSchedule(
+                        UserAccount userAccount,
+                        Float fixedPaymentAmount, String fixedPayments, String paymentSchedule);
 
-    public default boolean entityExists(Bill bill) {
-        return existsByUserAccountAndFixedPaymentAmountAndFixedPaymentsAndPaymentSchedule(bill.getUserAccount(),
-                bill.getFixedPaymentAmount(), bill.getFixedPayments(), bill.getPaymentSchedule());
-    }
+        public Optional<Bill> findByUserAccountAndFixedPaymentAmountAndFixedPaymentsAndPaymentSchedule(
+                        UserAccount userAccount, Float fixedPaymentAmount, String fixedPayments,
+                        String paymentSchedule);
 
-    public default Optional<Bill> getEntity(Bill bill) {
-        return findByUserAccountAndFixedPaymentAmountAndFixedPaymentsAndPaymentSchedule(bill.getUserAccount(),
-                bill.getFixedPaymentAmount(), bill.getFixedPayments(), bill.getPaymentSchedule());
-    }
+        public default boolean entityExists(Bill bill) {
+                return existsByUserAccountAndFixedPaymentAmountAndFixedPaymentsAndPaymentSchedule(bill.getUserAccount(),
+                                bill.getFixedPaymentAmount(), bill.getFixedPayments(), bill.getPaymentSchedule());
+        }
+
+        public default Optional<Bill> getEntity(Bill bill) {
+                return findByUserAccountAndFixedPaymentAmountAndFixedPaymentsAndPaymentSchedule(bill.getUserAccount(),
+                                bill.getFixedPaymentAmount(), bill.getFixedPayments(), bill.getPaymentSchedule());
+        }
 }

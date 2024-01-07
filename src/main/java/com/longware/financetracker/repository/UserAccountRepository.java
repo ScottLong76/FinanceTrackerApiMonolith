@@ -10,6 +10,8 @@ import com.longware.financetracker.repository.interfaces.EntityRepositoryInterfa
 @Repository
 public interface UserAccountRepository extends EntityRepositoryInterface<UserAccount, Long> {
 
+    public Iterable<UserAccount> findAllByUserName(String username);
+
     public boolean existsByUserName(String username);
 
     public default boolean entityExists(UserAccount userAccount) {

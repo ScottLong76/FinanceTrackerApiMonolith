@@ -12,21 +12,23 @@ import com.longware.financetracker.repository.interfaces.EntityRepositoryInterfa
 @Repository
 public interface BudgetedTransactionRepository extends EntityRepositoryInterface<BudgetedTransaction, Long> {
 
-    public boolean existsByPaidAndTransactionAmountAndDueDateAndUserAccount(boolean paid, Float transactionAmount,
-            Date dueDate, UserAccount userAccount);
+        public Iterable<BudgetedTransaction> findAllByUserAccount(UserAccount userAccount);
 
-    public Optional<BudgetedTransaction> findByPaidAndTransactionAmountAndDueDateAndUserAccount(boolean paid,
-            Float transactionAmount, Date dueDate, UserAccount userAccount);
+        public boolean existsByPaidAndTransactionAmountAndDueDateAndUserAccount(boolean paid, Float transactionAmount,
+                        Date dueDate, UserAccount userAccount);
 
-    public default boolean entityExists(BudgetedTransaction budgetedTransaction) {
-        return existsByPaidAndTransactionAmountAndDueDateAndUserAccount(budgetedTransaction.isPaid(),
-                budgetedTransaction.getTransactionAmount(), budgetedTransaction.getDueDate(),
-                budgetedTransaction.getUserAccount());
-    }
+        public Optional<BudgetedTransaction> findByPaidAndTransactionAmountAndDueDateAndUserAccount(boolean paid,
+                        Float transactionAmount, Date dueDate, UserAccount userAccount);
 
-    public default Optional<BudgetedTransaction> getEntity(BudgetedTransaction budgetedTransaction) {
-        return findByPaidAndTransactionAmountAndDueDateAndUserAccount(budgetedTransaction.isPaid(),
-                budgetedTransaction.getTransactionAmount(), budgetedTransaction.getDueDate(),
-                budgetedTransaction.getUserAccount());
-    }
+        public default boolean entityExists(BudgetedTransaction budgetedTransaction) {
+                return existsByPaidAndTransactionAmountAndDueDateAndUserAccount(budgetedTransaction.isPaid(),
+                                budgetedTransaction.getTransactionAmount(), budgetedTransaction.getDueDate(),
+                                budgetedTransaction.getUserAccount());
+        }
+
+        public default Optional<BudgetedTransaction> getEntity(BudgetedTransaction budgetedTransaction) {
+                return findByPaidAndTransactionAmountAndDueDateAndUserAccount(budgetedTransaction.isPaid(),
+                                budgetedTransaction.getTransactionAmount(), budgetedTransaction.getDueDate(),
+                                budgetedTransaction.getUserAccount());
+        }
 }

@@ -11,21 +11,25 @@ import com.longware.financetracker.repository.interfaces.EntityRepositoryInterfa
 @Repository
 public interface DepositMatchingRuleRepository extends EntityRepositoryInterface<DepositMatchingRule, Long> {
 
-    public boolean existsByExecutionOrderAndDepositLikeCriteriaAndDepositRegexCriteriaAndUserAccount(
-            Integer executionOrder, String depositLikeCriteria, String depositRegexCriteria, UserAccount userAccount);
+        public Iterable<DepositMatchingRule> findAllByUserAccount(UserAccount userAccount);
 
-    public Optional<DepositMatchingRule> findByExecutionOrderAndDepositLikeCriteriaAndDepositRegexCriteriaAndUserAccount(
-            Integer executionOrder, String depositLikeCriteria, String depositRegexCriteria, UserAccount userAccount);
+        public boolean existsByExecutionOrderAndDepositLikeCriteriaAndDepositRegexCriteriaAndUserAccount(
+                        Integer executionOrder, String depositLikeCriteria, String depositRegexCriteria,
+                        UserAccount userAccount);
 
-    public default boolean entityExists(DepositMatchingRule depositMatchingRule) {
-        return existsByExecutionOrderAndDepositLikeCriteriaAndDepositRegexCriteriaAndUserAccount(
-                depositMatchingRule.getExecutionOrder(), depositMatchingRule.getDepositLikeCriteria(),
-                depositMatchingRule.getDepositRegexCriteria(), depositMatchingRule.getUserAccount());
-    }
+        public Optional<DepositMatchingRule> findByExecutionOrderAndDepositLikeCriteriaAndDepositRegexCriteriaAndUserAccount(
+                        Integer executionOrder, String depositLikeCriteria, String depositRegexCriteria,
+                        UserAccount userAccount);
 
-    public default Optional<DepositMatchingRule> getEntity(DepositMatchingRule depositMatchingRule) {
-        return findByExecutionOrderAndDepositLikeCriteriaAndDepositRegexCriteriaAndUserAccount(
-                depositMatchingRule.getExecutionOrder(), depositMatchingRule.getDepositLikeCriteria(),
-                depositMatchingRule.getDepositRegexCriteria(), depositMatchingRule.getUserAccount());
-    }
+        public default boolean entityExists(DepositMatchingRule depositMatchingRule) {
+                return existsByExecutionOrderAndDepositLikeCriteriaAndDepositRegexCriteriaAndUserAccount(
+                                depositMatchingRule.getExecutionOrder(), depositMatchingRule.getDepositLikeCriteria(),
+                                depositMatchingRule.getDepositRegexCriteria(), depositMatchingRule.getUserAccount());
+        }
+
+        public default Optional<DepositMatchingRule> getEntity(DepositMatchingRule depositMatchingRule) {
+                return findByExecutionOrderAndDepositLikeCriteriaAndDepositRegexCriteriaAndUserAccount(
+                                depositMatchingRule.getExecutionOrder(), depositMatchingRule.getDepositLikeCriteria(),
+                                depositMatchingRule.getDepositRegexCriteria(), depositMatchingRule.getUserAccount());
+        }
 }

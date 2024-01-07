@@ -11,22 +11,24 @@ import com.longware.financetracker.repository.interfaces.EntityRepositoryInterfa
 @Repository
 public interface VendorMatchingRuleRepository extends EntityRepositoryInterface<VendorMatchingRule, Long> {
 
-    public boolean existsByVendorLikeCriteriaAndVendorRegexCriteriaAndUserAccount(String vendorLikeCriteria,
-            String vendorRegexCriteria, UserAccount userAccount);
+        public Iterable<VendorMatchingRule> findAllByUserAccount(UserAccount userAccount);
 
-    public Optional<VendorMatchingRule> findByVendorLikeCriteriaAndVendorRegexCriteriaAndUserAccount(
-            String vendorLikeCriteria, String vendorRegexCriteria, UserAccount userAccount);
+        public boolean existsByVendorLikeCriteriaAndVendorRegexCriteriaAndUserAccount(String vendorLikeCriteria,
+                        String vendorRegexCriteria, UserAccount userAccount);
 
-    public default boolean entityExists(VendorMatchingRule vendorMatchingRule) {
-        return existsByVendorLikeCriteriaAndVendorRegexCriteriaAndUserAccount(
-                vendorMatchingRule.getVendorLikeCriteria(), vendorMatchingRule.getVendorRegexCriteria(),
-                vendorMatchingRule.getUserAccount());
-    }
+        public Optional<VendorMatchingRule> findByVendorLikeCriteriaAndVendorRegexCriteriaAndUserAccount(
+                        String vendorLikeCriteria, String vendorRegexCriteria, UserAccount userAccount);
 
-    public default Optional<VendorMatchingRule> getEntity(VendorMatchingRule vendorMatchingRule) {
-        return findByVendorLikeCriteriaAndVendorRegexCriteriaAndUserAccount(
-                vendorMatchingRule.getVendorLikeCriteria(), vendorMatchingRule.getVendorRegexCriteria(),
-                vendorMatchingRule.getUserAccount());
-    }
+        public default boolean entityExists(VendorMatchingRule vendorMatchingRule) {
+                return existsByVendorLikeCriteriaAndVendorRegexCriteriaAndUserAccount(
+                                vendorMatchingRule.getVendorLikeCriteria(), vendorMatchingRule.getVendorRegexCriteria(),
+                                vendorMatchingRule.getUserAccount());
+        }
+
+        public default Optional<VendorMatchingRule> getEntity(VendorMatchingRule vendorMatchingRule) {
+                return findByVendorLikeCriteriaAndVendorRegexCriteriaAndUserAccount(
+                                vendorMatchingRule.getVendorLikeCriteria(), vendorMatchingRule.getVendorRegexCriteria(),
+                                vendorMatchingRule.getUserAccount());
+        }
 
 }

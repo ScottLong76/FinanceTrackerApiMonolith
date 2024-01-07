@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.entities.Vendor;
 import com.longware.financetracker.repository.VendorRepository;
 
@@ -61,7 +62,7 @@ public class VendorService {
         vendorRepository.delete(vendor);
     }
 
-    public Iterable<Vendor> findAllByUserAccount(UsrAccount userAccount) {
+    public Iterable<Vendor> findAllByUserAccount(UserAccount userAccount) {
         return vendorRepository.findAllByUserAccount(userAccount);
     }
 

@@ -61,8 +61,4 @@ public class UserAccountService {
         return userAccountRepository.getEntity(userAccount);
     }
 
-    public Iterable<UserAccount> findAllByUserAccount(UserAccount userAccount) {
-        return userAccountRepository.findAllByUserAccount(userAccount);
-    }
-
 }

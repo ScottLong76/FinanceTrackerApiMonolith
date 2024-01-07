@@ -72,7 +72,7 @@ public class BankTransactionService {
     }
 
     public Iterable<BankTransaction> findByUserAccount(UserAccount userAccount) {
-        return bankTransactionRepository.findByUserAccount(userAccount);
+        return bankTransactionRepository.findAllByUserAccount(userAccount);
     }
 
     public long count() {
@@ -123,6 +123,8 @@ public class BankTransactionService {
                 for (Transaction ofxTransaction : transactions) {
                     BankTransaction transaction = new BankTransaction();
                     transaction.setUserAccount(userAccount);
+                    transaction.setBank(selectedUploadBank);
+
                     String description = "";
                     if (ofxTransaction.getMemo() != null) {
                         description += ofxTransaction.getMemo() + " ";
@@ -197,7 +199,7 @@ public class BankTransactionService {
             return;
         }
         int updatedTransactions = 0;
-        Iterable<BankTransaction> bankTransactions = bankTransactionRepository.findByUserAccount(userAccount);
+        Iterable<BankTransaction> bankTransactions = bankTransactionRepository.findAllByUserAccount(userAccount);
         for (BankTransaction bankTransaction : bankTransactions) {
             for (String regex : regexList) {
                 if (bankTransaction.getDescription().matches(regex)) {
