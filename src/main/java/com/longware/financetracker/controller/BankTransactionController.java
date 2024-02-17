@@ -8,7 +8,10 @@ import java.util.Optional;
 import java.util.logging.Level;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,20 +36,21 @@ import com.longware.financetracker.service.VendorService;
 import com.longware.financetracker.util.DocumentConversionUtil;
 import com.longware.financetracker.util.UserAccountUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.java.Log;
 
-/**
- * This class is the REST controller for the BankTransaction entity.
- */
 @RestController
 @RequestMapping("/bankTransaction")
 @RequiredArgsConstructor
 @Getter
 @Setter
 @Log
+@Tag(name = "Bank Transaction", description = "APIs for managing bank transactions")
 public class BankTransactionController {
 
     private final BankTransactionService bankTransactionService;
@@ -67,34 +71,40 @@ public class BankTransactionController {
 
     private final UserAccountUtil userAccountUtil;
 
-    // Implement methods to create, update, and delete BankTransaction objects using
-    // available methods in the BankTransactionRepository interface.
-
-    // Implement a method to return a BankTransaction object by its id.
-    @RequestMapping("/getBankTransactionById")
-    public BankTransaction getBankTransactionById(Long id) {
+    @Operation(summary = "Get a bank transaction by ID")
+    @GetMapping("/getBankTransactionById")
+    public BankTransaction getBankTransactionById(
+            @Parameter(description = "ID of the bank transaction") @RequestParam Long id) {
         return bankTransactionService.findById(id).orElse(null);
     }
 
-    // Implement a method to return all BankTransaction objects.
-    @RequestMapping("/getAllBankTransactions")
-    public Iterable<BankTransaction> getAllBankTransactions(@AuthenticationPrincipal Principal principal) {
+    @Operation(summary = "Get all bank transactions")
+    @GetMapping("/getAllBankTransactions")
+    public Iterable<BankTransaction> getAllBankTransactions(
+            @AuthenticationPrincipal Principal principal) {
         return bankTransactionService.findAll();
     }
 
-    @RequestMapping("/saveBankTransaction")
-    public BankTransaction saveBankTransaction(BankTransaction bankTransaction,
+    @Operation(summary = "Save a bank transaction")
+    @PostMapping("/saveBankTransaction")
+    public BankTransaction saveBankTransaction(
+            @RequestBody BankTransaction bankTransaction,
             @AuthenticationPrincipal Principal principal) {
         return bankTransactionService.save(bankTransaction);
     }
 
-    @RequestMapping("/deleteBankTransaction")
-    public void deleteBankTransaction(BankTransaction bankTransaction, @AuthenticationPrincipal Principal principal) {
+    @Operation(summary = "Delete a bank transaction")
+    @DeleteMapping("/deleteBankTransaction")
+    public void deleteBankTransaction(
+            @RequestBody BankTransaction bankTransaction,
+            @AuthenticationPrincipal Principal principal) {
         bankTransactionService.delete(bankTransaction);
     }
 
-    @RequestMapping("/exportBankTransactions")
-    public File exportBankTransactions(@AuthenticationPrincipal Principal principal) {
+    @Operation(summary = "Export bank transactions to a file")
+    @GetMapping("/exportBankTransactions")
+    public File exportBankTransactions(
+            @AuthenticationPrincipal Principal principal) {
         File file = null;
         try {
             String username = principal.getName(); // Get the username of the authenticated user
@@ -116,12 +126,13 @@ public class BankTransactionController {
             e.printStackTrace();
             return null; // Or handle the exception in an appropriate way
         }
-
     }
 
+    @Operation(summary = "Upload a file")
     @PostMapping("/upload")
-    public void uploadFile(@RequestParam("file") MultipartFile file, Principal principal) {
-
+    public void uploadFile(
+            @Parameter(description = "File to upload") @RequestParam("file") MultipartFile file,
+            @AuthenticationPrincipal Principal principal) {
         UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
 
         try {
@@ -198,10 +209,12 @@ public class BankTransactionController {
         log.log(Level.INFO, "{0} Bank transaction saved successfully", bankTransactions.size());
     }
 
+    @Operation(summary = "Upload OFX file")
     @PostMapping("/uploadOfx")
-    public void uploadOfxFile(@RequestParam("file") MultipartFile file, @RequestParam("bank") String bankStr,
-            Principal principal) {
-
+    public void uploadOfxFile(
+            @Parameter(description = "OFX file to upload") @RequestParam("file") MultipartFile file,
+            @Parameter(description = "Bank information") @RequestParam("bank") String bankStr,
+            @AuthenticationPrincipal Principal principal) {
         UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
         ObjectMapper objectMapper = new ObjectMapper();
         Bank bank = null;
@@ -220,5 +233,4 @@ public class BankTransactionController {
         bankTransactionService.processOFXFile(DocumentConversionUtil.convertMultipartFileToFile(file), bank,
                 userAccount);
     }
-
 }

@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.longware.financetracker.entities.Bill;
 import com.longware.financetracker.repository.BillRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,24 +34,43 @@ public class BillController {
     // methods in the BillRepository interface.
 
     // Write a method to return a Bill object by its id.
+    @Operation(summary = "Get a Bill by ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Found the Bill", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = Bill.class)) }),
+        @ApiResponse(responseCode = "404", description = "Bill not found") })
     @RequestMapping("/getBillById")
-    public Bill getBillById(Long id, Principal principal) {
+    public Bill getBillById(@Parameter(description = "ID of the Bill") Long id, Principal principal) {
         return billRepository.findById(id).orElse(null);
     }
 
     // Write a method to return all Bill objects.
+    @Operation(summary = "Get all Bills")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Found all Bills", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = Bill.class)) }) })
     @RequestMapping("/getAllBills")
     public Iterable<Bill> getAllBills(Principal principal) {
         return billRepository.findAll();
     }
 
+    @Operation(summary = "Save a Bill")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Bill saved", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = Bill.class)) }) })
     @RequestMapping("/saveBill")
-    public Bill saveBill(Bill bill, Principal principal) {
+    public Bill saveBill(@Parameter(description = "Bill object to be saved") Bill bill, Principal principal) {
         return billRepository.save(bill);
     }
 
+    @Operation(summary = "Delete a Bill")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Bill deleted") })
     @RequestMapping("/deleteBill")
-    public void deleteBill(Bill bill, Principal principal) {
+    public void deleteBill(@Parameter(description = "Bill object to be deleted") Bill bill, Principal principal) {
         billRepository.delete(bill);
     }
 

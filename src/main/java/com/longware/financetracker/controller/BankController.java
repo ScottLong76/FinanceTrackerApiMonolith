@@ -10,6 +10,8 @@ import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.service.BankService;
 import com.longware.financetracker.util.UserAccountUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -22,6 +24,7 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Getter
 @Setter
+@Tag(name = "Bank", description = "APIs for managing banks")
 public class BankController {
 
     private final BankService bankService;
@@ -35,6 +38,7 @@ public class BankController {
      * @return The Bank object with the given id.
      */
     @RequestMapping("/getBankById")
+    @Operation(summary = "Get a bank by ID")
     public Bank getBankById(Long id, Principal principal) {
         UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
         return bankService.findById(id).orElse(null);
@@ -47,6 +51,7 @@ public class BankController {
      * @return A list of all Bank objects.
      */
     @RequestMapping("/getAllBanks")
+    @Operation(summary = "Get all banks")
     public Iterable<Bank> getAllBanks(Principal principal) {
         UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
         return bankService.findAll();
@@ -60,6 +65,7 @@ public class BankController {
      * @return The saved Bank object.
      */
     @RequestMapping("/saveBank")
+    @Operation(summary = "Save a bank")
     public Bank saveBank(Bank bank, Principal principal) {
         UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
         return bankService.save(bank);
@@ -72,6 +78,7 @@ public class BankController {
      * @param principal The principal object representing the authenticated user.
      */
     @RequestMapping("/deleteBank")
+    @Operation(summary = "Delete a bank")
     public void deleteBank(Bank bank, Principal principal) {
         UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
         bankService.delete(bank);
