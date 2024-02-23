@@ -2,12 +2,13 @@ package com.longware.financetracker.entities;
 
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.Entity; // Fix import
+import javax.persistence.GeneratedValue; // Fix import
+import javax.persistence.GenerationType; // Fix import
+import javax.persistence.Id; // Fix import
+import javax.persistence.JoinColumn; // Fix import
+import javax.persistence.ManyToOne; // Fix import
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
