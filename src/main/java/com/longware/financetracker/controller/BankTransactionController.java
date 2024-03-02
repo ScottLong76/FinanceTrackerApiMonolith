@@ -132,7 +132,7 @@ public class BankTransactionController {
     @PostMapping("/upload")
     public void uploadFile(
             @Parameter(description = "File to upload") @RequestParam("file") MultipartFile file,
-            @AuthenticationPrincipal Principal principal) {
+            Principal principal) {
         UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
 
         try {
@@ -214,7 +214,7 @@ public class BankTransactionController {
     public void uploadOfxFile(
             @Parameter(description = "OFX file to upload") @RequestParam("file") MultipartFile file,
             @Parameter(description = "Bank information") @RequestParam("bank") String bankStr,
-            @AuthenticationPrincipal Principal principal) {
+            Principal principal) {
         UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
         ObjectMapper objectMapper = new ObjectMapper();
         Bank bank = null;

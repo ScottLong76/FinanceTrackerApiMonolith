@@ -15,12 +15,16 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
+@JsonIgnoreProperties({"userAccount"})
 public class ShoppingItemPurchase {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,6 +72,7 @@ public class ShoppingItemPurchase {
 
         @ManyToOne
         @JoinColumn(name = "user_id")
+        @JsonBackReference
         private UserAccount userAccount;
 
 }

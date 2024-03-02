@@ -12,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +30,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
+@JsonIgnoreProperties({"userAccount"})
 public class Vendor {
 
     @Id
@@ -35,6 +40,7 @@ public class Vendor {
     private String description;
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<BankTransaction> bankTransactions;
 
     @ManyToOne
@@ -49,6 +55,7 @@ public class Vendor {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private UserAccount userAccount;
 
 }

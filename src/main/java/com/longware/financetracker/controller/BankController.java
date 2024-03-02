@@ -54,7 +54,8 @@ public class BankController {
     @Operation(summary = "Get all banks")
     public Iterable<Bank> getAllBanks(Principal principal) {
         UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
-        return bankService.findAll();
+        Iterable<Bank> bankIterable = bankService.findAll();
+        return bankIterable;
     }
 
     /**

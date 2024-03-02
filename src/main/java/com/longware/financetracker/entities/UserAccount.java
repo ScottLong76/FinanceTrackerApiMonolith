@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -49,41 +51,54 @@ public class UserAccount {
     private String userPassword;
 
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<BankTransaction> bankTransactions;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Vendor> vendors;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<VendorMatchingRule> vendorMatchingRules;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<VendorAccount> vendorAccounts;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Bill> bills;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Expense> expenses;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ExpenseCategory> expenseCategories;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DepositCategory> depositCategories;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Deposit> deposits;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DepositMatchingRule> depositMatchingRules;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BudgetEntry> budgetEntries;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Bank> banks;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LoginEvent> loginEvents;
 
