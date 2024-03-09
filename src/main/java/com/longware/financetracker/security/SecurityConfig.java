@@ -25,9 +25,11 @@ public class SecurityConfig {
         
         System.out.println("SecurityConfig.securityFilterChain()");
         
-        return http.csrf(csrf -> csrf.disable())
+        return http
+        .cors(Customizer.withDefaults())
+        .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(a -> a
-            .antMatchers("/v3/**", "/swagger-ui/**", "/api-docs/**", "/v3/api-docs/**").permitAll()
+            .antMatchers("/v3/**", "/swagger-ui/**", "/api-docs/**", "/v3/api-docs/**", "/actuator/**", "/favicon.ico").permitAll()
             .anyRequest().authenticated()
         )
         .httpBasic(Customizer.withDefaults())
