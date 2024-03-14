@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,18 +79,11 @@ public class BankTransactionController {
         return bankTransactionService.findById(id).orElse(null);
     }
 
-    @Operation(summary = "Get all bank transactions")
-    @GetMapping("/getAllBankTransactions")
-    public Iterable<BankTransaction> getAllBankTransactions(
-            @AuthenticationPrincipal Principal principal) {
-        return bankTransactionService.findAll();
-    }
-
     @Operation(summary = "Save a bank transaction")
     @PostMapping("/saveBankTransaction")
     public BankTransaction saveBankTransaction(
             @RequestBody BankTransaction bankTransaction,
-            @AuthenticationPrincipal Principal principal) {
+            Principal principal) {
         return bankTransactionService.save(bankTransaction);
     }
 
@@ -97,14 +91,14 @@ public class BankTransactionController {
     @DeleteMapping("/deleteBankTransaction")
     public void deleteBankTransaction(
             @RequestBody BankTransaction bankTransaction,
-            @AuthenticationPrincipal Principal principal) {
+            Principal principal) {
         bankTransactionService.delete(bankTransaction);
     }
 
     @Operation(summary = "Export bank transactions to a file")
     @GetMapping("/exportBankTransactions")
     public File exportBankTransactions(
-            @AuthenticationPrincipal Principal principal) {
+            Principal principal) {
         File file = null;
         try {
             String username = principal.getName(); // Get the username of the authenticated user
@@ -233,4 +227,17 @@ public class BankTransactionController {
         bankTransactionService.processOFXFile(DocumentConversionUtil.convertMultipartFileToFile(file), bank,
                 userAccount);
     }
+
+    @Operation(summary = "Get bank transactions for the current authenticated user with paging")
+    @GetMapping("/getBankTransactions")
+    public Page<BankTransaction> getBankTransactions(
+            Principal principal,
+            @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Sort by") @RequestParam(defaultValue = "id") List<String> sortBy){
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        Pageable pageable =  Pageable.ofSize(size).withPage(page);
+        return bankTransactionService.getBankTransactionsByUser(userAccount, pageable);
+    }
+    
 }

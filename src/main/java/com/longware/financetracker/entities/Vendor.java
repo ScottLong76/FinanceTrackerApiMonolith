@@ -48,9 +48,11 @@ public class Vendor {
     private Expense expense;
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<VendorAccount> vendorAccounts;
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<VendorMatchingRule> vendorMatchingRules;
 
     @ManyToOne

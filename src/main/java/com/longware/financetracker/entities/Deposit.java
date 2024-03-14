@@ -43,9 +43,11 @@ public class Deposit {
     private List<BankTransaction> bankTransactions;
 
     @OneToMany(mappedBy = "deposit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<DepositMatchingRule> depositMatchingRules;
 
     @OneToMany(mappedBy = "deposit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<BudgetEntry> budgetEntries;
 
     @ManyToOne
