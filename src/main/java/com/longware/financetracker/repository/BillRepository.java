@@ -30,4 +30,6 @@ public interface BillRepository extends EntityRepositoryInterface<Bill, Long> {
                 return findByUserAccountAndFixedPaymentAmountAndFixedPaymentsAndPaymentSchedule(bill.getUserAccount(),
                                 bill.getFixedPaymentAmount(), bill.getFixedPayments(), bill.getPaymentSchedule());
         }
+
+        
 }

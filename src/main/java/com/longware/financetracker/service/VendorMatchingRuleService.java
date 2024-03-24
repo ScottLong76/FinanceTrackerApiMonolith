@@ -2,6 +2,8 @@ package com.longware.financetracker.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.UserAccount;
@@ -53,6 +55,10 @@ public class VendorMatchingRuleService {
 
     public Iterable<VendorMatchingRule> findAllByUserAccount(UserAccount userAccount) {
         return vendorMatchingRuleRepository.findAllByUserAccount(userAccount);
+    }
+
+    public Page<VendorMatchingRule> findAllByUserAccount(UserAccount userAccount, Pageable pageable) {
+        return vendorMatchingRuleRepository.findPageByUserAccount(userAccount, pageable);
     }
 
 }

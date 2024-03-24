@@ -2,12 +2,18 @@ package com.longware.financetracker.controller;
 
 import java.security.Principal;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.longware.financetracker.entities.Deposit;
-import com.longware.financetracker.repository.DepositRepository;
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.service.BankTransactionService;
+import com.longware.financetracker.service.DepositService;
+import com.longware.financetracker.util.UserAccountUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,9 +33,11 @@ import lombok.Setter;
 @Setter
 public class DepsoitController {
 
-    private final DepositRepository depositRepository;
+    private final DepositService depositService;
 
     private final BankTransactionService bankTransactionService;
+
+    private final UserAccountUtil userAccountUtil;
 
     // Write methods to create, update, and delete Deposit objects using available
     // methods in the DepositRepository interface.
@@ -42,7 +50,7 @@ public class DepsoitController {
     })
     @RequestMapping("/getDepositById")
     public Deposit getDepositById(@Parameter(description = "Deposit ID") Long id, Principal principal) {
-        return depositRepository.findById(id).orElse(null);
+        return depositService.findById(id).orElse(null);
     }
 
     // Write a method to return all Deposit objects.
@@ -51,8 +59,12 @@ public class DepsoitController {
         @ApiResponse(responseCode = "200", description = "Successful operation")
     })
     @RequestMapping("/getAllDeposits")
-    public Iterable<Deposit> getAllDeposits(Principal principal) {
-        return depositRepository.findAll();
+    public Page<Deposit> getAllDeposits(Principal principal,
+            @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Sort by") @RequestParam(defaultValue = "id") String sortBy) {
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return depositService.findAllByUserAccount(userAccount, PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
     @Operation(summary = "Save Deposit")
@@ -61,7 +73,7 @@ public class DepsoitController {
     })
     @RequestMapping("/saveDeposit")
     public Deposit saveDeposit(@Parameter(description = "Deposit object") Deposit deposit, Principal principal) {
-        return depositRepository.save(deposit);
+        return depositService.save(deposit);
     }
 
     @Operation(summary = "Delete Deposit")
@@ -70,7 +82,7 @@ public class DepsoitController {
     })
     @RequestMapping("/deleteDeposit")
     public void deleteDeposit(@Parameter(description = "Deposit object") Deposit deposit, Principal principal) {
-        depositRepository.delete(deposit);
+        depositService.delete(deposit);
     }
 
     @Operation(summary = "Update Bank Transactions by Deposit")
@@ -79,7 +91,7 @@ public class DepsoitController {
     })
     @RequestMapping("/updateBankTransactionsByDeposit")
     public Deposit updateBankTransactionsByDeposit(@Parameter(description = "Deposit ID") Long depositId, Principal principal) {
-        Deposit deposit = depositRepository.findById(depositId).orElse(null);
+        Deposit deposit = depositService.findById(depositId).orElse(null);
         if (deposit != null) {
             bankTransactionService.updateBankTransactionsByEntityAndRegex(deposit,
                     deposit.getDepositMatchingRules().stream().map(rule -> rule.getDepositRegexCriteria()).toList(),

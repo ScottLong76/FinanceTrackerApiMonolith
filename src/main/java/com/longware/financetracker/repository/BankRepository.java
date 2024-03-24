@@ -25,4 +25,5 @@ public interface BankRepository extends EntityRepositoryInterface<Bank, Long> {
     public default Optional<Bank> getEntity(Bank bank) {
         return findByDescriptionAndUserAccount(bank.getDescription(), bank.getUserAccount());
     }
+
 }

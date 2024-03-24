@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.longware.financetracker.entities.ExpenseCategory;
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.repository.ExpenseCategoryRepository;
+import com.longware.financetracker.util.UserAccountUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,6 +31,7 @@ import lombok.Setter;
 public class ExpenseCategoryController {
 
     private final ExpenseCategoryRepository expenseCategoryRepository;
+    private final UserAccountUtil userAccountUtil;
 
     // Write methods to create, update, and delete ExpenseCategory objects using
     // available methods in the ExpenseCategoryRepository interface.
@@ -53,7 +56,8 @@ public class ExpenseCategoryController {
                 schema = @Schema(implementation = ExpenseCategory.class)) }) })
     @RequestMapping("/getAllExpenseCategories")
     public Iterable<ExpenseCategory> getAllExpenseCategories(Principal principal) {
-        return expenseCategoryRepository.findAll();
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return expenseCategoryRepository.findAllByUserAccount(userAccount);
     }
 
     @Operation(summary = "Save ExpenseCategory")

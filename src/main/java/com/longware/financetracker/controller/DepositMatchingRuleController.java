@@ -2,11 +2,17 @@ package com.longware.financetracker.controller;
 
 import java.security.Principal;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.longware.financetracker.entities.DepositMatchingRule;
-import com.longware.financetracker.repository.DepositMatchingRuleRepository;
+import com.longware.financetracker.entities.UserAccount;
+import com.longware.financetracker.service.DepositMatchingRuleService;
+import com.longware.financetracker.util.UserAccountUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,7 +34,8 @@ import lombok.Setter;
 @Setter
 public class DepositMatchingRuleController {
 
-    private final DepositMatchingRuleRepository depositMatchingRuleRepository;
+    private final DepositMatchingRuleService depositMatchingRuleService;
+    private final UserAccountUtil userAccountUtil;
 
     // Write methods to create, update, and delete DepositMatchingRule objects using
     // available methods in the DepositMatchingRuleRepository interface.
@@ -43,7 +50,7 @@ public class DepositMatchingRuleController {
     @RequestMapping("/getDepositMatchingRuleById")
     public DepositMatchingRule getDepositMatchingRuleById(
             @Parameter(description = "Id of the DepositMatchingRule") Long id, Principal principal) {
-        return depositMatchingRuleRepository.findById(id).orElse(null);
+        return depositMatchingRuleService.findById(id).orElse(null);
     }
 
     // Write a method to return all DepositMatchingRule objects.
@@ -52,8 +59,12 @@ public class DepositMatchingRuleController {
         content = @Content(schema = @Schema(implementation = DepositMatchingRule.class, 
             type = "array")))
     @RequestMapping("/getAllDepositMatchingRules")
-    public Iterable<DepositMatchingRule> getAllDepositMatchingRules(Principal principal) {
-        return depositMatchingRuleRepository.findAll();
+    public Page<DepositMatchingRule> getAllDepositMatchingRules(Principal principal,
+            @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Sort by") @RequestParam(defaultValue = "id") String sortBy) {
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return depositMatchingRuleService.findAllByUserAccount(userAccount, PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
     @Operation(summary = "Save DepositMatchingRule")
@@ -66,7 +77,7 @@ public class DepositMatchingRuleController {
     public DepositMatchingRule saveDepositMatchingRule(
             @Parameter(description = "DepositMatchingRule object to be saved") 
             DepositMatchingRule depositMatchingRule, Principal principal) {
-        return depositMatchingRuleRepository.save(depositMatchingRule);
+        return depositMatchingRuleService.save(depositMatchingRule);
     }
 
     @Operation(summary = "Delete DepositMatchingRule")
@@ -78,7 +89,7 @@ public class DepositMatchingRuleController {
     public void deleteDepositMatchingRule(
             @Parameter(description = "DepositMatchingRule object to be deleted") 
             DepositMatchingRule depositMatchingRule, Principal principal) {
-        depositMatchingRuleRepository.delete(depositMatchingRule);
+                depositMatchingRuleService.delete(depositMatchingRule);
     }
 
 }

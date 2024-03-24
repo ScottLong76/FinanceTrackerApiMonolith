@@ -3,12 +3,18 @@ package com.longware.financetracker.controller;
 import java.security.Principal;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.longware.financetracker.entities.UserAccount;
 import com.longware.financetracker.entities.Vendor;
 import com.longware.financetracker.service.BankTransactionService;
 import com.longware.financetracker.service.VendorService;
+import com.longware.financetracker.util.UserAccountUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,6 +37,7 @@ public class VendorController {
     private final VendorService vendorService;
 
     private final BankTransactionService bankTransactionService;
+    private final UserAccountUtil userAccountUtil;
 
     // Write methods to create, update, and delete Vendor objects using available
     // methods in the VendorRepository interface.
@@ -55,8 +62,12 @@ public class VendorController {
         @ApiResponse(responseCode = "200", description = "Successful operation")
     })
     @RequestMapping("/getAllVendors")
-    public Iterable<Vendor> getAllVendors(Principal principal) {
-        return vendorService.findAll();
+    public Page<Vendor> getAllVendors(Principal principal,
+            @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Sort by") @RequestParam(defaultValue = "id") String sortBy) {
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return vendorService.findAllByUserAccount(userAccount, PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
     @Operation(summary = "Save Vendor")

@@ -2,6 +2,8 @@ package com.longware.financetracker.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.DepositCategory;
@@ -31,6 +33,10 @@ public class DepositCategoryService {
         depositCategoryRepository.deleteById(id);
     }
 
+    public void delete(DepositCategory depositCategory) {
+        depositCategoryRepository.delete(depositCategory);
+    }
+
     public void saveAll(Iterable<DepositCategory> depositCategories) {
         depositCategoryRepository.saveAll(depositCategories);
     }
@@ -55,8 +61,9 @@ public class DepositCategoryService {
         return depositCategoryRepository.getEntity(depositCategory);
     }
 
-    public Iterable<DepositCategory> findAllByUserAccount(UserAccount userAccount) {
-        return depositCategoryRepository.findAllByUserAccount(userAccount);
+
+    public Page<DepositCategory> findAllByUserAccount(UserAccount userAccount, Pageable pageable) {
+        return depositCategoryRepository.findPageByUserAccount(userAccount, pageable);
     }
 
 }

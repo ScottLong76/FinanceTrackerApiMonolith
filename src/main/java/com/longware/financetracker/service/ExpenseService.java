@@ -2,6 +2,8 @@ package com.longware.financetracker.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.Expense;
@@ -34,6 +36,10 @@ public class ExpenseService {
         expenseRepository.deleteById(id);
     }
 
+    public void delete(Expense expense) {
+        expenseRepository.delete(expense);
+    }
+
     public void saveAll(Iterable<Expense> expenses) {
         expenseRepository.saveAll(expenses);
     }
@@ -60,6 +66,10 @@ public class ExpenseService {
 
     public Iterable<Expense> findAllByUserAccount(UserAccount userAccount) {
         return expenseRepository.findAllByUserAccount(userAccount);
+    }
+
+    public Page<Expense> findAllByUserAccount(UserAccount userAccount, Pageable pageable) {
+        return expenseRepository.findPageByUserAccount(userAccount, pageable);
     }
 
 }

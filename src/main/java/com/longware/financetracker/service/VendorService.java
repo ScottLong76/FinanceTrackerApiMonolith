@@ -2,6 +2,8 @@ package com.longware.financetracker.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.UserAccount;
@@ -64,6 +66,10 @@ public class VendorService {
 
     public Iterable<Vendor> findAllByUserAccount(UserAccount userAccount) {
         return vendorRepository.findAllByUserAccount(userAccount);
+    }
+
+    public Page<Vendor> findAllByUserAccount(UserAccount userAccount, Pageable pageable) {
+        return vendorRepository.findPageByUserAccount(userAccount, pageable);
     }
 
 }

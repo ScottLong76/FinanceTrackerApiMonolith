@@ -2,11 +2,17 @@ package com.longware.financetracker.controller;
 
 import java.security.Principal;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.longware.financetracker.entities.DepositCategory;
-import com.longware.financetracker.repository.DepositCategoryRepository;
+import com.longware.financetracker.entities.UserAccount;
+import com.longware.financetracker.service.DepositCategoryService;
+import com.longware.financetracker.util.UserAccountUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,8 +34,8 @@ import lombok.Setter;
 @Setter
 public class DepositCategoryController {
 
-    private final DepositCategoryRepository depositCategoryRepository;
-
+    private final DepositCategoryService depositCategoryService;
+     private final UserAccountUtil userAccountUtil;
     // Write methods to create, update, and delete DepositCategory objects using
     // available methods in the DepositCategoryRepository interface.
 
@@ -44,7 +50,7 @@ public class DepositCategoryController {
     public DepositCategory getDepositCategoryById(
         @Parameter(description = "ID of the DepositCategory to be obtained", required = true) Long id, 
         Principal principal) {
-        return depositCategoryRepository.findById(id).orElse(null);
+        return depositCategoryService.findById(id).orElse(null);
     }
 
     // Write a method to return all DepositCategory objects.
@@ -54,8 +60,13 @@ public class DepositCategoryController {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = DepositCategory.class)))
     })
     @RequestMapping("/getAllDepositCategories")
-    public Iterable<DepositCategory> getAllDepositCategories(Principal principal) {
-        return depositCategoryRepository.findAll();
+    public Page<DepositCategory> getAllDepositCategories(Principal principal,
+                        @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Sort by") @RequestParam(defaultValue = "id") String sortBy) {
+            
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return depositCategoryService.findAllByUserAccount(userAccount, PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
     @Operation(summary = "Save DepositCategory")
@@ -65,7 +76,7 @@ public class DepositCategoryController {
     })
     @RequestMapping("/saveDepositCategory")
     public DepositCategory saveDepositCategory(DepositCategory depositCategory, Principal principal) {
-        return depositCategoryRepository.save(depositCategory);
+        return depositCategoryService.save(depositCategory);
     }
 
     @Operation(summary = "Delete DepositCategory")
@@ -75,7 +86,7 @@ public class DepositCategoryController {
     })
     @RequestMapping("/deleteDepositCategory")
     public void deleteDepositCategory(DepositCategory depositCategory, Principal principal) {
-        depositCategoryRepository.delete(depositCategory);
+        depositCategoryService.delete(depositCategory);
     }
 
 }

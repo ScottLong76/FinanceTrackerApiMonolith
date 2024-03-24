@@ -2,6 +2,8 @@ package com.longware.financetracker.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.ShoppingItem;
@@ -52,6 +54,10 @@ public class ShoppingItemService {
 
     public Iterable<ShoppingItem> findAllByUserAccount(UserAccount userAccount) {
         return shoppingItemRepository.findAllByUserAccount(userAccount);
+    }
+
+    public Page<ShoppingItem> findAllByUserAccount(UserAccount userAccount, Pageable pageable) {
+        return shoppingItemRepository.findPageByUserAccount(userAccount, pageable);
     }
 
 }

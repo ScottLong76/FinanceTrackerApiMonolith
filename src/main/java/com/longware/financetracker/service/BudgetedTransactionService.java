@@ -1,5 +1,7 @@
 package com.longware.financetracker.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.BudgetedTransaction;
@@ -29,6 +31,10 @@ public class BudgetedTransactionService {
         budgetedTransactionRepository.deleteById(id);
     }
 
+    public void delete(BudgetedTransaction budgetedTransaction) {
+        budgetedTransactionRepository.delete(budgetedTransaction);
+    }
+
     public void saveAll(Iterable<BudgetedTransaction> budgetedTransactions) {
         budgetedTransactionRepository.saveAll(budgetedTransactions);
     }
@@ -37,16 +43,12 @@ public class BudgetedTransactionService {
         return budgetedTransactionRepository.save(budgetedTransaction);
     }
 
-    public Object findById(Long id) {
-        return budgetedTransactionRepository.findById(id);
-    }
-
     public Iterable<BudgetedTransaction> findAll() {
         return budgetedTransactionRepository.findAll();
     }
 
-    public Iterable<BudgetedTransaction> findAllByUserAccount(UserAccount userAccount) {
-        return budgetedTransactionRepository.findAllByUserAccount(userAccount);
+    public Page<BudgetedTransaction> findAllByUserAccount(UserAccount userAccount, Pageable pageable) {
+        return budgetedTransactionRepository.findPageByUserAccount(userAccount, pageable);
     }
 
 }

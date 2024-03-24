@@ -2,7 +2,11 @@ package com.longware.financetracker.controller;
 
 import java.security.Principal;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.longware.financetracker.entities.Bank;
@@ -11,6 +15,7 @@ import com.longware.financetracker.service.BankService;
 import com.longware.financetracker.util.UserAccountUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -52,10 +57,13 @@ public class BankController {
      */
     @RequestMapping("/getAllBanks")
     @Operation(summary = "Get all banks")
-    public Iterable<Bank> getAllBanks(Principal principal) {
+    public Page<Bank> getAllBanks(Principal principal, 
+                @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Sort by") @RequestParam(defaultValue = "id") String sortBy) {
         UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
-        Iterable<Bank> bankIterable = bankService.findAll();
-        return bankIterable;
+        Page<Bank> bankPage = bankService.findAllByUserAccount(userAccount, PageRequest.of(page, size, Sort.by(sortBy)));
+        return bankPage;
     }
 
     /**

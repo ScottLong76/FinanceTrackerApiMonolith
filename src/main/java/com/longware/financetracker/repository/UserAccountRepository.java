@@ -2,13 +2,14 @@ package com.longware.financetracker.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.longware.financetracker.entities.UserAccount;
-import com.longware.financetracker.repository.interfaces.EntityRepositoryInterface;
+
 
 @Repository
-public interface UserAccountRepository extends EntityRepositoryInterface<UserAccount, Long> {
+public interface UserAccountRepository extends JpaRepository<UserAccount, Long>{
 
     public Iterable<UserAccount> findAllByUserName(String username);
 
@@ -23,5 +24,6 @@ public interface UserAccountRepository extends EntityRepositoryInterface<UserAcc
     public default Optional<UserAccount> getEntity(UserAccount userAccount) {
         return findByUserName(userAccount.getUserName());
     }
+
 
 }

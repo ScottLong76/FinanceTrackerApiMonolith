@@ -2,11 +2,17 @@ package com.longware.financetracker.controller;
 
 import java.security.Principal;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.longware.financetracker.entities.Expense;
-import com.longware.financetracker.repository.ExpenseRepository;
+import com.longware.financetracker.entities.UserAccount;
+import com.longware.financetracker.service.ExpenseService;
+import com.longware.financetracker.util.UserAccountUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,7 +34,8 @@ import lombok.Setter;
 @Setter
 public class ExpenseController {
 
-    private final ExpenseRepository expenseRepository;
+    private final ExpenseService expenseService;
+    private final UserAccountUtil userAccountUtil;
 
     // Write methods to create, update, and delete Expense objects using available
     // methods in the ExpenseRepository interface.
@@ -42,7 +49,7 @@ public class ExpenseController {
         @ApiResponse(responseCode = "404", description = "Expense not found") })
     @RequestMapping("/getExpenseById")
     public Expense getExpenseById(@Parameter(description = "Expense ID") Long id) {
-        return expenseRepository.findById(id).orElse(null);
+        return expenseService.findById(id).orElse(null);
     }
 
     // Write a method to return all Expense objects.
@@ -52,8 +59,12 @@ public class ExpenseController {
             content = { @Content(mediaType = "application/json", 
                 schema = @Schema(implementation = Expense.class)) }) })
     @RequestMapping("/getAllExpenses")
-    public Iterable<Expense> getAllExpenses(Principal principal) {
-        return expenseRepository.findAll();
+    public Page<Expense> getAllExpenses(Principal principal,
+            @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Sort by") @RequestParam(defaultValue = "id") String sortBy) {
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return expenseService.findAllByUserAccount(userAccount, PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
     @Operation(summary = "Save Expense")
@@ -63,7 +74,7 @@ public class ExpenseController {
                 schema = @Schema(implementation = Expense.class)) }) })
     @RequestMapping("/saveExpense")
     public Expense saveExpense(Expense expense, Principal principal) {
-        return expenseRepository.save(expense);
+        return expenseService.save(expense);
     }
 
     @Operation(summary = "Delete Expense")
@@ -71,7 +82,7 @@ public class ExpenseController {
         @ApiResponse(responseCode = "200", description = "Expense deleted") })
     @RequestMapping("/deleteExpense")
     public void deleteExpense(Expense expense, Principal principal) {
-        expenseRepository.delete(expense);
+        expenseService.delete(expense);
     }
 
 }

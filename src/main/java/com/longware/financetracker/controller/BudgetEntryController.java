@@ -2,11 +2,17 @@ package com.longware.financetracker.controller;
 
 import java.security.Principal;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.longware.financetracker.entities.BudgetEntry;
-import com.longware.financetracker.repository.BudgetEntryRepository;
+import com.longware.financetracker.entities.UserAccount;
+import com.longware.financetracker.service.BudgetEntryService;
+import com.longware.financetracker.util.UserAccountUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,7 +34,8 @@ import lombok.Setter;
 @Setter
 public class BudgetEntryController {
 
-    private final BudgetEntryRepository budgetEntryRepository;
+    private final BudgetEntryService budgetEntryService;
+    private final UserAccountUtil userAccountUtil;
 
     // Write methods to create, update, and delete BudgetEntry objects using
     // available methods in the BudgetEntryRepository interface.
@@ -42,7 +49,7 @@ public class BudgetEntryController {
         @ApiResponse(responseCode = "404", description = "BudgetEntry not found") })
     @RequestMapping("/getBudgetEntryById")
     public BudgetEntry getBudgetEntryById(@Parameter(description = "BudgetEntry ID") Long id) {
-        return budgetEntryRepository.findById(id).orElse(null);
+        return budgetEntryService.findById(id).orElse(null);
     }
 
     // Write a method to return all BudgetEntry objects.
@@ -52,8 +59,12 @@ public class BudgetEntryController {
             content = { @Content(mediaType = "application/json", 
                 schema = @Schema(implementation = BudgetEntry.class)) }) })
     @RequestMapping("/getAllBudgetEntries")
-    public Iterable<BudgetEntry> getAllBudgetEntries(Principal principal) {
-        return budgetEntryRepository.findAll();
+    public Page<BudgetEntry> getAllBudgetEntries(Principal principal, 
+                        @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Sort by") @RequestParam(defaultValue = "id") String sortBy) {
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return budgetEntryService.findAllByUserAccount(userAccount, PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
     @Operation(summary = "Save BudgetEntry")
@@ -63,7 +74,7 @@ public class BudgetEntryController {
                 schema = @Schema(implementation = BudgetEntry.class)) }) })
     @RequestMapping("/saveBudgetEntry")
     public BudgetEntry saveBudgetEntry(BudgetEntry budgetEntry, Principal principal) {
-        return budgetEntryRepository.save(budgetEntry);
+        return budgetEntryService.save(budgetEntry);
     }
 
     @Operation(summary = "Delete BudgetEntry")
@@ -71,7 +82,7 @@ public class BudgetEntryController {
         @ApiResponse(responseCode = "200", description = "BudgetEntry deleted") })
     @RequestMapping("/deleteBudgetEntry")
     public void deleteBudgetEntry(BudgetEntry budgetEntry, Principal principal) {
-        budgetEntryRepository.delete(budgetEntry);
+        budgetEntryService.delete(budgetEntry);
     }
 
 }

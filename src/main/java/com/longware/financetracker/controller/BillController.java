@@ -2,11 +2,17 @@ package com.longware.financetracker.controller;
 
 import java.security.Principal;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.longware.financetracker.entities.Bill;
-import com.longware.financetracker.repository.BillRepository;
+import com.longware.financetracker.entities.UserAccount;
+import com.longware.financetracker.service.BillService;
+import com.longware.financetracker.util.UserAccountUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,7 +34,8 @@ import lombok.Setter;
 @Setter
 public class BillController {
 
-    private final BillRepository billRepository;
+    private BillService billService;
+    private final UserAccountUtil userAccountUtil;
 
     // Write methods to create, update, and delete Bill objects using available
     // methods in the BillRepository interface.
@@ -42,7 +49,7 @@ public class BillController {
         @ApiResponse(responseCode = "404", description = "Bill not found") })
     @RequestMapping("/getBillById")
     public Bill getBillById(@Parameter(description = "ID of the Bill") Long id, Principal principal) {
-        return billRepository.findById(id).orElse(null);
+        return billService.findById(id).orElse(null);
     }
 
     // Write a method to return all Bill objects.
@@ -52,8 +59,12 @@ public class BillController {
             content = { @Content(mediaType = "application/json", 
                 schema = @Schema(implementation = Bill.class)) }) })
     @RequestMapping("/getAllBills")
-    public Iterable<Bill> getAllBills(Principal principal) {
-        return billRepository.findAll();
+    public Page<Bill> getAllBills(Principal principal ,
+                    @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Sort by") @RequestParam(defaultValue = "id") String sortBy) {
+                UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return billService.findAllByUserAccount(userAccount, PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
     @Operation(summary = "Save a Bill")
@@ -63,7 +74,7 @@ public class BillController {
                 schema = @Schema(implementation = Bill.class)) }) })
     @RequestMapping("/saveBill")
     public Bill saveBill(@Parameter(description = "Bill object to be saved") Bill bill, Principal principal) {
-        return billRepository.save(bill);
+        return billService.save(bill);
     }
 
     @Operation(summary = "Delete a Bill")
@@ -71,7 +82,7 @@ public class BillController {
         @ApiResponse(responseCode = "200", description = "Bill deleted") })
     @RequestMapping("/deleteBill")
     public void deleteBill(@Parameter(description = "Bill object to be deleted") Bill bill, Principal principal) {
-        billRepository.delete(bill);
+        billService.delete(bill);
     }
 
 }

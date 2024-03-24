@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.longware.financetracker.entities.BankTransaction;
@@ -35,6 +33,5 @@ public interface BankTransactionRepository extends EntityRepositoryInterface<Ban
                                 bankTransaction.getUserAccount());
         }
 
-        public Page<BankTransaction> findPageByUserAccount(UserAccount userAccount, Pageable pageRequest);
 
 }

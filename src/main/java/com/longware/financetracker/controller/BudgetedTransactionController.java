@@ -2,11 +2,17 @@ package com.longware.financetracker.controller;
 
 import java.security.Principal;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.longware.financetracker.entities.BudgetedTransaction;
-import com.longware.financetracker.repository.BudgetedTransactionRepository;
+import com.longware.financetracker.entities.UserAccount;
+import com.longware.financetracker.service.BudgetedTransactionService;
+import com.longware.financetracker.util.UserAccountUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,24 +34,9 @@ import lombok.Setter;
 @Setter
 public class BudgetedTransactionController {
 
-    private final BudgetedTransactionRepository budgetedTransactionRepository;
+    private final BudgetedTransactionService budgetedTransactionService;
+    private final UserAccountUtil userAccountUtil;
 
-    // Write methods to create, update, and delete BudgetedTransaction objects using
-    // available methods in the BudgetedTransactionRepository interface.
-
-    // Write a method to return a BudgetedTransaction object by its id.
-    @Operation(summary = "Get BudgetedTransaction by ID")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Found the BudgetedTransaction", 
-            content = { @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = BudgetedTransaction.class)) }),
-        @ApiResponse(responseCode = "404", description = "BudgetedTransaction not found") })
-    @RequestMapping("/getBudgetedTransactionById")
-    public BudgetedTransaction getBudgetedTransactionById(
-            @Parameter(description = "ID of the BudgetedTransaction to be obtained", required = true) Long id,
-            Principal principal) {
-        return budgetedTransactionRepository.findById(id).orElse(null);
-    }
 
     // Write a method to return all BudgetedTransaction objects.
     @Operation(summary = "Get all BudgetedTransactions")
@@ -54,8 +45,12 @@ public class BudgetedTransactionController {
             content = { @Content(mediaType = "application/json", 
                 schema = @Schema(implementation = BudgetedTransaction.class)) }) })
     @RequestMapping("/getAllBudgetedTransactions")
-    public Iterable<BudgetedTransaction> getAllBudgetedTransactions(Principal principal) {
-        return budgetedTransactionRepository.findAll();
+    public Page<BudgetedTransaction> getAllBudgetedTransactions(Principal principal, 
+                        @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Sort by") @RequestParam(defaultValue = "id") String sortBy) {
+        UserAccount userAccount = userAccountUtil.getUserAccountFromPrincipal(principal);
+        return budgetedTransactionService.findAllByUserAccount(userAccount, PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
     @Operation(summary = "Save BudgetedTransaction")
@@ -67,7 +62,7 @@ public class BudgetedTransactionController {
     public BudgetedTransaction saveBudgetedTransaction(
             @Parameter(description = "BudgetedTransaction to be saved", required = true) BudgetedTransaction budgetedTransaction,
             Principal principal) {
-        return budgetedTransactionRepository.save(budgetedTransaction);
+        return budgetedTransactionService.save(budgetedTransaction);
     }
 
     @Operation(summary = "Delete BudgetedTransaction")
@@ -77,7 +72,7 @@ public class BudgetedTransactionController {
     public void deleteBudgetedTransaction(
             @Parameter(description = "BudgetedTransaction to be deleted", required = true) BudgetedTransaction budgetedTransaction,
             Principal principal) {
-        budgetedTransactionRepository.delete(budgetedTransaction);
+                budgetedTransactionService.delete(budgetedTransaction);
     }
 
 }

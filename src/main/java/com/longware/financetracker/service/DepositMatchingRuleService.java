@@ -2,6 +2,8 @@ package com.longware.financetracker.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.longware.financetracker.entities.DepositMatchingRule;
@@ -34,6 +36,10 @@ public class DepositMatchingRuleService {
         depositMatchingRuleRepository.deleteById(id);
     }
 
+    public void delete(DepositMatchingRule depositMatchingRule) {
+        depositMatchingRuleRepository.delete(depositMatchingRule);
+    }
+
     public void saveAll(Iterable<DepositMatchingRule> depositMatchingRules) {
         depositMatchingRuleRepository.saveAll(depositMatchingRules);
     }
@@ -52,6 +58,10 @@ public class DepositMatchingRuleService {
 
     public Iterable<DepositMatchingRule> findAllByUserAccount(UserAccount userAccount) {
         return depositMatchingRuleRepository.findAllByUserAccount(userAccount);
+    }
+
+    public Page<DepositMatchingRule> findAllByUserAccount(UserAccount userAccount, Pageable pageable) {
+        return depositMatchingRuleRepository.findPageByUserAccount(userAccount, pageable);
     }
 
 }
