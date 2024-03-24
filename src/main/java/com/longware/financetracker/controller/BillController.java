@@ -34,7 +34,7 @@ import lombok.Setter;
 @Setter
 public class BillController {
 
-    private BillService billService;
+    private final BillService billService;
     private final UserAccountUtil userAccountUtil;
 
     // Write methods to create, update, and delete Bill objects using available
